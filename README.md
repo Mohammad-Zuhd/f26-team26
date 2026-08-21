@@ -2,6 +2,6 @@
 > Your project title
 
 ## Team Members
-> Team Member #1 name
+> Mohammad Zuhd
 
 > Team Member #2 name
