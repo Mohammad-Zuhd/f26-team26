@@ -1,5 +1,5 @@
 ## Title
-> Your project title
+> RecLeague
 
 ## Team Members
 > Mohammad Zuhd
