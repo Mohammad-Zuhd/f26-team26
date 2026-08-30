@@ -12,10 +12,10 @@
 
 ## App Functions
 1. Customer (the user with the customer role):
-    1. Create/modify customer profile - <how will your app do this?>
-    2. View available services - <how will your app do this?>.
-    3. Subscribe to available services - <how will your app do this?>.
-    4. Write reviews for subscribed services - <how will your app do this?>.
+    1. Create/modify customer profile - Players can create and update a profile with their name, location, preferred sports, skill level, and availability.
+    2. View available services - Players can browse teams with open roster spots, filtered by sport, skill level, location, and schedule.
+    3. Subscribe to available services - Players can request to join a team, and are added to the roster once the captain approves.
+    4. Write reviews for subscribed services - Leave feedback on team organization, competitiveness, and overall experience.
 2. Provider (the user with the provider role):
     1. Create/modify/remove provider profile - Team captains can create, update, or remove their team profile.
     2. Create services - Team captains can create teams, post available roster spots, and post games that need players or substitutes.
