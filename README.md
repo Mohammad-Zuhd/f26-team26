@@ -22,7 +22,7 @@
     3. View customer statistics - Team captains can view their roster and information about players who join or request to join their team.
     4. Reply to reviews - Team captains can respond to feedback left by players.
 3. SysAdmin (the user with the admin role if applicable):
-    1. Manage user access - .
+    1. Manage user access - . 
     2. Moderate services - .
     3. Moderate reviews - .
-    4. View usage statistics - .
+    4. View usage statistics - . 
