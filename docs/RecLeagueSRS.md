@@ -1,10 +1,14 @@
 # Requirements – RecLeague
 
-**Project Name:** RecLeague  
-**Team:** Mohammad Zuhd - Provider, Goran Ali, Faiyha Dafalla  
-**Course:** CSC 340  
-**Version:** 1.0  
-**Date:** 2026-09-17  
+**Project Name:** RecLeague
+
+**Team:** Mohammad Zuhd - Provider, Goran Ali, Faiyha Dafalla
+
+**Course:** CSC 340
+
+**Version:** 1.0
+
+**Date:** 2026-09-17
 
 ---
 
@@ -23,9 +27,9 @@
 
 **Primary Users and Roles:**
 
-- **Customer (Player)** - Find and join recreational sports teams.
-- **Provider (Team Captain)** - Manage teams and find players to fill open roster spots.
-- **SysAdmin** - Manage user access, moderate content, and monitor platform activity.
+- **Customer (Player):** Find and join recreational sports teams.
+- **Provider (Team Captain):** Manage teams and find players to fill open roster spots.
+- **SysAdmin:** Manage user access, moderate content, and monitor platform activity.
 
 **Scope (this semester):**
 
@@ -63,13 +67,14 @@ Scenario: Create and manage team profile
   Then my team information should be saved
   And players should be able to see the updated team profile
 ```
+
 ```text
 Scenario: Remove team profile
   Given I am logged in as a team captain
   And I have an existing team profile
   When I remove my team profile
   Then the team profile should no longer be visible to players
-  ```
+```
 
 **US-6 - Create teams and post open spots**
 
