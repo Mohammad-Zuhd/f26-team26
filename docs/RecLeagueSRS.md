@@ -2,7 +2,7 @@
 
 **Project Name:** RecLeague
 
-**Team:** Mohammad Zuhd - Provider, Goran Ali, Faiyha Dafalla
+**Team:** Mohammad Zuhd - Provider, Goran Ali - Customer, Faiyha Dafalla
 
 **Course:** CSC 340
 
@@ -49,8 +49,89 @@
 
 ## 2. Functional Requirements (User Stories)
 
-### 2.1 Customer Stories
+### 2.1 Customer (Player) Stories
 
+**US-1 - Create and manage player profile**
+
+*Story:* As a player, I want to create and update my profile with my location, preferred sports, skill level, and availability so that captains can tell whether I am a good fit for their team.
+
+*Acceptance:*
+
+```text
+Scenario: Create a player profile
+  Given I am registered and logged in as a player
+  When I enter my name, location, preferred sports, skill level, and availability
+  Then my profile should be saved
+  And team captains should be able to view my profile
+```
+
+```text
+Scenario: Update a player profile
+  Given I am logged in as a player
+  And I have an existing profile
+  When I change my skill level or availability
+  Then my updated information should be saved
+  And the changes should be reflected anywhere my profile is shown
+```
+
+**US-2 - Browse teams with open roster spots**
+
+*Story:* As a player, I want to browse teams with open roster spots filtered by sport, skill level, location, and schedule so that I only see teams I could realistically join.
+
+*Acceptance:*
+
+```text
+Scenario: Browse teams by filter
+  Given I am logged in as a player
+  When I select a sport, skill level, location, and schedule
+  Then I should see a list of teams with open roster spots matching those filters
+  And each team should display its sport, skill level, location, and schedule
+```
+
+```text
+Scenario: No teams match the selected filters
+  Given I am logged in as a player
+  When I apply filters that no team matches
+  Then I should see a message telling me no teams were found
+```
+
+**US-3 - Request to join a team**
+
+*Story:* As a player, I want to request to join a team with an open roster spot so that I can be added to the roster once the captain approves me.
+
+*Acceptance:*
+
+```text
+Scenario: Request to join a team
+  Given I am logged in as a player
+  And I am viewing a team with an open roster spot
+  When I submit a request to join that team
+  Then my request should be sent to the team captain
+  And I should see the request listed as pending
+```
+
+```text
+Scenario: Captain approves my request
+  Given I have a pending request to join a team
+  When the team captain approves my request
+  Then I should be added to that team's roster
+  And the team should appear in my list of teams
+```
+
+**US-4 - Write a review for a team**
+
+*Story:* As a player, I want to write a review of a team I have played with so that other players know what the team's organization and competitiveness are like.
+
+*Acceptance:*
+
+```text
+Scenario: Write a review for a team
+  Given I am logged in as a player
+  And I am on the roster of a team
+  When I submit a review with a rating and comments
+  Then my review should be saved
+  And it should be visible to other players viewing that team
+```
 
 ### 2.2 Provider (Team Captain) Stories
 
