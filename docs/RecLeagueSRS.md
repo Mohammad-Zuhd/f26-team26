@@ -2,7 +2,7 @@
 
 **Project Name:** RecLeague
 
-**Team:** Mohammad Zuhd - Provider, Goran Ali - Customer, Faiyha Dafalla
+**Team:** Mohammad Zuhd - Provider, Goran Ali - Customer, Faiyha Dafalla - SysAdmin
 
 **Course:** CSC 340
 
@@ -200,7 +200,65 @@ Scenario: Reply to a review
 
 
 ### 2.3 SysAdmin Stories
+#### User Story 1: Manage User Access
+As a SysAdmin, I want to manage user accounts so that I can keep the platform safe and make sure only appropriate users have access.
 
+**Acceptance Criteria:**
+- The SysAdmin can view player and team captain accounts.
+- The SysAdmin can approve, suspend, or remove accounts when necessary.
+
+**Scenario: Suspend a user account**
+```text
+Scenario: Suspend a user account
+Given I am logged in as a SysAdmin
+When I select a user account that needs to be suspended
+Then I should be able to suspend the account
+```
+
+#### User Story 2: Moderate Services
+As a SysAdmin, I want to moderate team listings and roster posts so that inappropriate, misleading, or inactive content can be removed.
+
+**Acceptance Criteria:**
+- The SysAdmin can review team listings and roster posts.
+- The SysAdmin can remove inappropriate, misleading, or inactive content.
+
+**Scenario: Remove an inappropriate team listing**
+```text
+Scenario: Remove an inappropriate team listing
+Given I am logged in as a SysAdmin
+When I find a team listing that violates platform rules
+Then I should be able to remove the team listing
+```
+
+#### User Story 3: Moderate Reviews
+As a SysAdmin, I want to moderate reviews so that inappropriate or misleading reviews can be removed from the platform.
+
+**Acceptance Criteria:**
+- The SysAdmin can review feedback posted by players.
+- The SysAdmin can remove inappropriate or misleading reviews.
+
+**Scenario: Remove an inappropriate review**
+```text
+Scenario: Remove an inappropriate review
+Given I am logged in as a SysAdmin
+When I find a review that violates platform rules
+Then I should be able to remove the review
+```
+
+#### User Story 4: View Usage Statistics
+As a SysAdmin, I want to view platform usage statistics so that I can monitor activity on RecLeague.
+
+**Acceptance Criteria:**
+- The SysAdmin can view the number of users and teams.
+- The SysAdmin can view roster requests, games posted, and player engagement.
+
+**Scenario: View platform statistics**
+```text
+Scenario: View platform statistics
+Given I am logged in as a SysAdmin
+When I open the platform statistics
+Then I should be able to view current usage information
+```
 
 ## 3. Non-Functional Requirements
 - **Performance:** 95% of team search and browse requests should return results in under 2 seconds under typical load.
@@ -210,10 +268,18 @@ Scenario: Reply to a review
 - **Scalability:** The system should support at least 500 concurrent users without degraded search performance.
 
 ## 4. Assumptions, Constraints, and Policies
-
+- Users are expected to provide accurate profile and team information.
+- Team captains are responsible for keeping team listings and roster information up to date.
+- The system requires an internet connection to access RecLeague features.
+- Users must follow platform rules when creating teams, posting games, and writing reviews.
+- SysAdmins may remove inappropriate, misleading, or inactive content when necessary.
+- User information should only be accessible to authorized users.
 
 ## 5. Milestones (course-aligned)
-
+- **Milestone 1:** Complete the Software Requirements Specification (SRS) and define user stories for Customer, Provider, and SysAdmin roles.
+- **Milestone 2:** Create and review the system design, including major features and interface planning.
+- **Milestone 3:** Implement the main RecLeague features for users, team captains, and SysAdmins.
+- **Milestone 4:** Test the application, fix issues, and prepare the final project for submission.
 
 ## 6. Change Management
 
