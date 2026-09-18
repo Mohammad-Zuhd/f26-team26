@@ -2,7 +2,7 @@
 
 **Project Name:** RecLeague
 
-**Team:** Mohammad Zuhd - Provider, Goran Ali - Customer, Faiyha Dafalla - Sysadmin
+**Team:** Mohammad Zuhd - Provider, Goran Ali - Customer, Faiyha Dafalla - SysAdmin
 
 **Course:** CSC 340
 
@@ -268,10 +268,18 @@ Then I should be able to view current usage information
 - **Scalability:** The system should support at least 500 concurrent users without degraded search performance.
 
 ## 4. Assumptions, Constraints, and Policies
-
+- Users are expected to provide accurate profile and team information.
+- Team captains are responsible for keeping team listings and roster information up to date.
+- The system requires an internet connection to access RecLeague features.
+- Users must follow platform rules when creating teams, posting games, and writing reviews.
+- SysAdmins may remove inappropriate, misleading, or inactive content when necessary.
+- User information should only be accessible to authorized users.
 
 ## 5. Milestones (course-aligned)
-
+- **Milestone 1:** Complete the Software Requirements Specification (SRS) and define user stories for Customer, Provider, and SysAdmin roles.
+- **Milestone 2:** Create and review the system design, including major features and interface planning.
+- **Milestone 3:** Implement the main RecLeague features for users, team captains, and SysAdmins.
+- **Milestone 4:** Test the application, fix issues, and prepare the final project for submission.
 
 ## 6. Change Management
 
