@@ -203,7 +203,11 @@ Scenario: Reply to a review
 
 
 ## 3. Non-Functional Requirements
-
+- **Performance:** 95% of team search and browse requests should return results in under 2 seconds under typical load.
+- **Availability/Reliability:** The system should be available 99.5% of the time, with planned maintenance windows communicated to users in advance.
+- **Security/Privacy:** The system must use secure authentication and authorization. Player location and contact information must be encrypted in transit and at rest, and visible only to captains of teams the player has requested to join.
+- **Usability:** A new player should be able to register, complete a profile, and submit a request to join a team within 5 minutes without outside help.
+- **Scalability:** The system should support at least 500 concurrent users without degraded search performance.
 
 ## 4. Assumptions, Constraints, and Policies
 
