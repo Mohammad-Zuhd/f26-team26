@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Spots | RecLeague</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar bg-white border-bottom shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="dashboard.html">
+        <img src="../images/recleague-logo.png" alt="RecLeague Logo" width="100" height="100" class="me-2">
+        <span class="fw-bold fs-4" style="color: #123C73;">RecLeague</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-4">
+        <a href="dashboard.html" class="text-decoration-none" style="color: #123C73;">Dashboard</a>
+        <a href="manage-teams.html" class="text-decoration-none text-secondary">My Teams</a>
+        <a href="post-open-spots.html" class="text-decoration-none fw-bold" style="color: #123C73;">Open Spots</a>
+        <a href="roster.html" class="text-decoration-none text-secondary">Roster</a>
+        <a href="reviews.html" class="text-decoration-none text-secondary">Reviews</a>
+        <a href="../index.html" class="btn text-white" style="background-color: #123C73;">Log Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="py-5 text-white" style="background-color: #123C73;">
+    <div class="container">
+      <span class="badge mb-3" style="background-color: #F15A29;">TEAM CAPTAIN</span>
+      <h1 class="fw-bold">Post Open Spots</h1>
+      <p class="mb-0">Find new players and substitutes for your recreational sports teams.</p>
+    </div>
+  </section>
+
+<main class="container my-5">
+
+        <!-- Open Spots -->
+    <h2 id="currentSpots" class="fw-bold mb-4" style="color: #123C73;">
+    Current Open Spots
+    </h2>
+
+    <div class="row g-4 mb-5">
+
+    <!-- Genyu Forces -->
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h4 class="fw-bold" style="color: #123C73;">Genyu Forces</h4>
+            <p class="mb-1">Basketball | Intermediate</p>
+            <p class="mb-1">Tuesdays, 6 PM</p>
+            <p><strong>2 spots open</strong></p>
+            <a href="#editSpot" class="btn btn-outline-primary btn-sm">Edit Spot</a>
+            <a href="#closeSpot" class="btn btn-outline-danger btn-sm">Close Spot</a>
+        </div>
+        </div>
+    </div>
+
+    <!-- The Saiyans -->
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h4 class="fw-bold" style="color: #123C73;">The Saiyans</h4>
+            <p class="mb-1">Soccer | Intermediate</p>
+            <p class="mb-1">Sundays, 6 PM</p>
+            <p><strong>4 spots open</strong></p>
+            <a href="#editSpot" class="btn btn-outline-primary btn-sm">Edit Spot</a>
+            <a href="#closeSpot" class="btn btn-outline-danger btn-sm">Close Spot</a>
+        </div>
+        </div>
+    </div>
+
+    <!-- The Z fighters -->
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h4 class="fw-bold" style="color: #123C73;">The Z fighters</h4>
+            <p class="mb-1">Volleyball | Advanced</p>
+            <p class="mb-1">Thursdays, 6 PM</p>
+            <p><strong>1 spot open</strong></p>
+            <a href="#editSpot" class="btn btn-outline-primary btn-sm">Edit Spot</a>
+            <a href="#closeSpot" class="btn btn-outline-danger btn-sm">Close Spot</a>
+        </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Post New Spot -->
+    <div id="postSpot" class="card border-0 shadow-sm rounded-4 mb-5">
+      <div class="card-body p-4">
+        <h2 class="fw-bold mb-3" style="color: #123C73;">Post a New Open Spot</h2>
+        <p class="text-muted">Enter the details of the available position on your team.</p>
+
+        <form action="post-open-spots.html" method="get">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label for="team" class="form-label">Select Team</label>
+             <select id="team" name="team" class="form-select" required>
+                <option value="">Select your team</option>
+                <option>Genyu Forces</option>
+                <option>The Saiyans</option>
+                <option>The Z fighters</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="spotType" class="form-label">Spot Type</label>
+              <select id="spotType" name="spotType" class="form-select" required>
+                <option value="">Select spot type</option>
+                <option>Permanent Player</option>
+                <option>Substitute Player</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="spots" class="form-label">Number of Open Spots</label>
+              <input type="number" id="spots" name="spots" class="form-control" min="1" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="date" class="form-label">Game Date</label>
+              <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="time" class="form-label">Game Time</label>
+              <input type="time" id="time" name="time" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="location" class="form-label">Game Location</label>
+              <input type="text" id="location" name="location" class="form-control"
+                     placeholder="Enter game location" required>
+            </div>
+
+            <div class="col-12">
+              <label for="description" class="form-label">Additional Details</label>
+              <textarea id="description" name="description" class="form-control" rows="3"
+                        placeholder="Describe the available spot"></textarea>
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn text-white" style="background-color: #F15A29;">Post Open Spot</button>
+              <a href="#currentSpots" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Post -->
+ <!-- Edit Open Spot -->
+<div id="editSpot" class="card border-0 shadow-sm rounded-4 mb-5">
+  <div class="card-body p-4">
+    <h2 class="fw-bold mb-3" style="color: #123C73;">Edit Open Spot</h2>
+
+    <form action="post-open-spots.html" method="get">
+      <div class="row g-3">
+
+        <div class="col-md-6">
+          <label for="editSpotTeam" class="form-label">Choose Team</label>
+          <select id="editSpotTeam" name="editSpotTeam" class="form-select" required>
+            <option value="">Select a team</option>
+            <option>Genyu Forces</option>
+            <option>The Saiyans</option>
+            <option>The Z fighters</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label for="editSpots" class="form-label">Available Spots</label>
+          <input type="number" id="editSpots" name="editSpots"
+                 class="form-control" min="0" required>
+        </div>
+
+        <div class="col-md-6">
+          <label for="editSpotDate" class="form-label">Game Date</label>
+          <input type="date" id="editSpotDate" name="editSpotDate"
+                 class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+          <label for="editSpotTime" class="form-label">Game Time</label>
+          <input type="time" id="editSpotTime" name="editSpotTime"
+                 class="form-control" required>
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn text-white"
+                  style="background-color: #123C73;">Save Changes</button>
+          <a href="#currentSpots" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+  <!-- Close Open Spot -->
+<div id="closeSpot" class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+
+    <h3 class="text-danger">Close Open Spot</h3>
+    <p>Select the team whose open spot you want to close.</p>
+
+    <form action="post-open-spots.html" method="get">
+      <label for="closeTeam" class="form-label">Choose Team</label>
+      <select id="closeTeam" name="closeTeam" class="form-select mb-3" required>
+        <option value="">Select a team</option>
+        <option value="Genyu Forces">Genyu Forces</option>
+        <option value="The Saiyans">The Saiyans</option>
+        <option value="The Z fighters">The Z fighters</option>
+      </select>
+
+      <button type="submit" class="btn btn-danger">Confirm Close</button>
+      <a href="#currentSpots" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+
+    </div>
+</div>
+
+</main>
+
+  <!-- Footer -->
+  <footer class="py-4 text-white text-center" style="background-color: #123C73;">
+    <p class="fw-bold mb-1">RecLeague</p>
+    <p class="mb-0 small">Connecting players. Building teams.</p>
+  </footer>
+
+</body>
+</html>

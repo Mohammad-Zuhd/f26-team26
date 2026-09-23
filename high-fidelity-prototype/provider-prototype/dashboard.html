@@ -4,86 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Provider Dashboard | RecLeague</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <body class="bg-light">
+
+<body class="bg-light">
 
   <!-- Navbar -->
-  <nav class="navbar navbar-dark bg-success">
+  <nav class="navbar bg-white border-bottom shadow-sm">
     <div class="container">
-      <a class="navbar-brand" href="dashboard.html">RecLeague</a>
-      <div>
-        <a class="text-white me-3" href="dashboard.html">Dashboard</a>
-        <a class="text-white me-3" href="manage-teams.html">My Teams</a>
-        <a class="text-white me-3" href="roster.html">Roster</a>
-        <a class="text-white me-3" href="reviews.html">Reviews</a>
-        <a class="text-white" href="../index.html">Log Out</a>
+      <a class="navbar-brand d-flex align-items-center" href="dashboard.html">
+        <img src="../images/recleague-logo.png" alt="RecLeague Logo" width="100" height="100" class="me-2">
+        <span class="fw-bold fs-4" style="color: #123C73;">RecLeague</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-4">
+        <a href="dashboard.html" class="text-decoration-none fw-bold" style="color: #123C73;">Dashboard</a>
+        <a href="manage-teams.html" class="text-decoration-none text-secondary">My Teams</a>
+        <a href="post-open-spots.html" class="text-decoration-none text-secondary">Open Spots</a>
+        <a href="roster.html" class="text-decoration-none text-secondary">Roster</a>
+        <a href="reviews.html" class="text-decoration-none text-secondary">Reviews</a>
+        <a href="../index.html" class="btn text-white" style="background-color: #123C73;">Log Out</a>
       </div>
     </div>
   </nav>
 
+  <!-- Welcome Section -->
+  <section class="py-5 text-white" style="background-color: #123C73;">
+    <div class="container">
+      <div class="row align-items-center g-4">
+
+        <div class="col-lg-6">
+          <span class="badge mb-3" style="background-color: #F15A29;">TEAM CAPTAIN</span>
+          <h1 class="display-5 fw-bold mb-3">Welcome to RecLeague!</h1>
+          <p class="fs-5 mb-4">
+            Build your team, connect with players, and manage your recreational
+            sports community all in one place.
+          </p>
+          <a href="manage-teams.html" class="btn btn-lg text-white" style="background-color: #F15A29;">
+            Manage My Teams
+          </a>
+        </div>
+
+        <div class="col-lg-6">
+          <img src="../images/sports-banner.jpg" alt="Recreational sports players"
+               class="img-fluid rounded-4 shadow" style="width: 100%; height: 275px; object-fit: cover;">
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Dashboard -->
-  <div class="container my-4">
+  <main class="container my-5">
 
-    <h1>Provider Dashboard</h1>
-    <p class="text-muted">Welcome, Team Captain! Manage your teams and players here.</p>
+    <h2 class="fw-bold" style="color: #123C73;">Your Dashboard</h2>
+    <p class="text-muted mb-4">Manage your teams, players, and upcoming games.</p>
 
-    <div class="row">
+   <!-- My Teams -->
+<h2 class="fw-bold mb-4" style="color: #123C73;">My Teams</h2>
 
-      <!-- Manage Teams -->
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">Manage Teams</h5>
-            <p class="card-text">
-              Create, update, and manage your recreational sports teams.
-            </p>
-            <a href="manage-teams.html" class="btn btn-success">Manage Teams</a>
-          </div>
-        </div>
+<div class="row g-4 mb-5">
+
+  <!-- Genyu Forces -->
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+<img src="../images/Genyu-Forces.jpg" alt="Genyu Forces"
+     class="card-img-top w-100"
+     style="height: 320px; object-fit: contain;">
+
+      <div class="card-body p-4 d-flex flex-column">
+        <h4 class="fw-bold" style="color: #123C73;">Genyu Forces</h4>
+        <p class="text-muted mb-2">Basketball | Intermediate</p>
+        <p class="mb-1"><strong>Schedule:</strong> Tuesdays, 6 PM</p>
+        <p class="mb-3"><strong>Available Spots:</strong> 2</p>
+
+        <a href="manage-teams.html" class="btn text-white mt-auto"
+           style="background-color: #123C73;">Manage Team</a>
       </div>
-
-      <!-- Post Open Spots -->
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">Post Open Spots</h5>
-            <p class="card-text">
-              Post available roster spots and games to find players or substitutes.
-            </p>
-            <a href="post-open-spots.html" class="btn btn-success">Post Open Spots</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- View Roster -->
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">Team Roster</h5>
-            <p class="card-text">
-              View your team members and players requesting to join your team.
-            </p>
-            <a href="roster.html" class="btn btn-success">View Roster</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Reviews -->
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">Team Reviews</h5>
-            <p class="card-text">
-              Read player reviews and respond to their feedback.
-            </p>
-            <a href="reviews.html" class="btn btn-success">View Reviews</a>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
+
+  <!-- The Saiyans -->
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+    <img src="../images/Saiyans.jpg" alt="The Saiyans"
+     class="card-img-top w-100"
+     style="height: 320px; object-fit: contain;">
+      <div class="card-body p-4 d-flex flex-column">
+        <span class="badge align-self-start mb-3" style="background-color: #F15A29;">SOCCER</span>
+        <h4 class="fw-bold" style="color: #123C73;">The Saiyans</h4>
+        <p class="text-muted mb-2">Soccer | Intermediate</p>
+        <p class="mb-1"><strong>Schedule:</strong> Sundays, 6 PM</p>
+        <p class="mb-3"><strong>Available Spots:</strong> 4</p>
+
+        <a href="manage-teams.html" class="btn text-white mt-auto"
+           style="background-color: #123C73;">Manage Team</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Z fighters -->
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+  <img src="../images/Z-fighters.jpg" alt="The Z fighters"
+     class="card-img-top w-100"
+     style="height: 320px; object-fit: contain;">
+      <div class="card-body p-4 d-flex flex-column">
+        <span class="badge align-self-start mb-3" style="background-color: #F15A29;">VOLLEYBALL</span>
+        <h4 class="fw-bold" style="color: #123C73;">The Z fighters</h4>
+        <p class="text-muted mb-2">Volleyball | Advanced</p>
+        <p class="mb-1"><strong>Schedule:</strong> Thursdays, 6 PM</p>
+        <p class="mb-3"><strong>Available Spots:</strong> 1</p>
+
+        <a href="manage-teams.html" class="btn text-white mt-auto"
+           style="background-color: #123C73;">Manage Team</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+  
+
+    <!-- Team Management -->
+<h2 class="fw-bold" style="color: #123C73;">Team Management</h2>
+<p class="text-muted mb-4">Select a feature to manage your recreational sports teams.</p>
+
+<div class="row g-4">
+
+  <!-- Manage Teams -->
+  <div class="col-md-6 col-lg-3">
+    <div class="card h-100 border-0 shadow-sm rounded-4">
+      <div class="card-body p-4 d-flex flex-column">
+        <h5 class="fw-bold" style="color: #123C73;">Manage Teams</h5>
+        <p class="text-muted">Create, update, and manage your team profiles.</p>
+        <a href="manage-teams.html" class="btn text-white mt-auto"
+           style="background-color: #123C73;">Manage Teams</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post Open Spots -->
+  <div class="col-md-6 col-lg-3">
+    <div class="card h-100 border-0 shadow-sm rounded-4">
+      <div class="card-body p-4 d-flex flex-column">
+        <h5 class="fw-bold" style="color: #123C73;">Post Open Spots</h5>
+        <p class="text-muted">Find new players and substitutes for your teams.</p>
+        <a href="post-open-spots.html" class="btn text-white mt-auto"
+           style="background-color: #123C73;">Post Open Spots</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Roster -->
+  <div class="col-md-6 col-lg-3">
+    <div class="card h-100 border-0 shadow-sm rounded-4">
+      <div class="card-body p-4 d-flex flex-column">
+        <h5 class="fw-bold" style="color: #123C73;">Team Roster</h5>
+        <p class="text-muted">View your players and pending join requests.</p>
+        <a href="roster.html" class="btn text-white mt-auto"
+           style="background-color: #123C73;">View Roster</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Reviews -->
+  <div class="col-md-6 col-lg-3">
+    <div class="card h-100 border-0 shadow-sm rounded-4">
+      <div class="card-body p-4 d-flex flex-column">
+        <h5 class="fw-bold" style="color: #123C73;">Team Reviews</h5>
+        <p class="text-muted">Read player feedback and respond to reviews.</p>
+        <a href="reviews.html" class="btn text-white mt-auto"
+           style="background-color: #123C73;">View Reviews</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-4 text-white text-center" style="background-color: #123C73;">
+    <p class="fw-bold mb-1">RecLeague</p>
+    <p class="mb-0 small">Connecting players. Building teams.</p>
+  </footer>
+
 </body>
 </html>
