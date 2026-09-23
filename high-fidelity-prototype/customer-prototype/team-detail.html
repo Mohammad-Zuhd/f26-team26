@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Saiyans | RecLeague</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar bg-white border-bottom shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="browse-teams.html">
+        <img src="../images/recleague-logo.png" alt="RecLeague Logo" width="100" height="100" class="me-2">
+        <span class="fw-bold fs-4" style="color: #123C73;">RecLeague</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-4">
+        <a href="browse-teams.html" class="text-decoration-none fw-bold" style="color: #123C73;">Browse Teams</a>
+        <a href="my-profile.html" class="text-decoration-none text-secondary">My Profile</a>
+        <a href="../index.html" class="btn text-white" style="background-color: #123C73;">Log Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-5">
+
+    <a href="browse-teams.html" class="text-decoration-none" style="color: #123C73;">&larr; Back to teams</a>
+
+    <div class="card border-0 shadow-sm rounded-4 mt-3">
+      <div class="card-body p-4">
+
+        <img src="../images/Saiyans.jpg" alt="The Saiyans"
+             class="rounded-4 mb-4" style="width: 100%; height: 320px; object-fit: contain;">
+
+        <span class="badge mb-3" style="background-color: #F15A29;">SOCCER</span>
+        <h1 class="fw-bold" style="color: #123C73;">The Saiyans</h1>
+
+        <table class="table mt-3">
+          <tr><th>Sport</th><td>Soccer</td></tr>
+          <tr><th>Skill Level</th><td>Intermediate</td></tr>
+          <tr><th>Captain</th><td>Goran Ali</td></tr>
+          <tr><th>Schedule</th><td>Sundays, 6 PM</td></tr>
+          <tr><th>Location</th><td>UNCG Soccer Field</td></tr>
+          <tr><th>Available Spots</th><td>4</td></tr>
+        </table>
+
+        <button class="btn text-white" style="background-color: #F15A29;" onclick="sendRequest()">
+          Request to Join
+        </button>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-4 text-white text-center" style="background-color: #123C73;">
+    <p class="fw-bold mb-1">RecLeague</p>
+    <p class="mb-0 small">© 2026 RecLeague. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Show a pop-up window confirming the request
+    function sendRequest() {
+      alert("Success! Request sent.");
+    }
+  </script>
+</body>
+</html>
