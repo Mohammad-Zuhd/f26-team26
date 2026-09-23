@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | RecLeague</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .navy { color: #123C73; }
+    .bg-navy { background-color: #123C73; }
+    .bg-orange { background-color: #F15A29; }
+  </style>
+</head>
+
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar bg-white border-bottom shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center navy fw-bold fs-4" href="browse-teams.html">
+        <img src="../images/recleague-logo.png" alt="RecLeague Logo" width="100" height="100" class="me-2">
+        RecLeague
+      </a>
+      <div class="d-flex align-items-center gap-4">
+        <a href="browse-teams.html" class="text-decoration-none text-secondary">Browse Teams</a>
+        <a href="my-profile.html" class="text-decoration-none fw-bold navy">My Profile</a>
+        <a href="../index.html" class="btn bg-navy text-white">Log Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome -->
+  <section class="py-5 text-white bg-navy">
+    <div class="container">
+      <span class="badge bg-orange mb-3">PLAYER</span>
+      <h1 class="display-5 fw-bold mb-2">Goran Ali</h1>
+      <p class="fs-5 mb-0">Basketball, Soccer | Intermediate</p>
+    </div>
+  </section>
+
+  <main class="container my-5">
+
+    <!-- Profile -->
+    <h2 class="fw-bold navy">My Profile</h2>
+    <p class="text-muted mb-4">Your player information.</p>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+      <div class="card-body p-4">
+        <table class="table">
+          <tr><th>Name</th><td>Goran Ali</td></tr>
+          <tr><th>Email</th><td>goran@gmail.com</td></tr>
+          <tr><th>Sports</th><td>Soccer</td></tr>
+          <tr><th>Skill Level</th><td>Intermediate</td></tr>
+        </table>
+
+        <button class="btn bg-orange text-white" onclick="toggleEdit()">Edit Profile</button>
+
+        <!-- Hidden until Edit Profile is clicked -->
+        <div id="editForm" class="mt-4" style="display: none;">
+          <input type="text" class="form-control mb-3" value="Goran Ali">
+          <input type="text" class="form-control mb-3" value="Basketball, Soccer">
+          <select class="form-select mb-3">
+            <option>Beginner</option>
+            <option selected>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+          <button class="btn bg-navy text-white" onclick="toggleEdit()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- My Teams -->
+    <h2 class="fw-bold navy">My Teams</h2>
+    <p class="text-muted mb-4">Teams you joined or requested to join.</p>
+
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-body p-4">
+        <table class="table align-middle">
+          <tr><th>Team</th><th>Sport</th><th>Schedule</th><th>Status</th></tr>
+          <tr>
+            <td><a href="team-profile.html" class="text-decoration-none navy">The Saiyans</a></td>
+            <td>Soccer</td>
+            <td>Sundays, 6 PM</td>
+            <td><span class="badge bg-success">Accepted</span></td>
+          </tr>
+          <tr>
+            <td><a href="team-profile.html" class="text-decoration-none navy">Genyu Forces</a></td>
+            <td>Basketball</td>
+            <td>Tuesdays, 6 PM</td>
+            <td><span class="badge bg-warning text-dark">Pending</span></td>
+          </tr>
+        </table>
+
+        <a href="browse-teams.html" class="btn bg-navy text-white">Find More Teams</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-4 text-white text-center bg-navy">
+    <p class="fw-bold mb-1">RecLeague</p>
+    <p class="mb-0 small">© 2026 RecLeague. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Show or hide the edit form
+    function toggleEdit() {
+      let form = document.getElementById("editForm");
+      form.style.display = (form.style.display === "none") ? "block" : "none";
+    }
+  </script>
+</body>
+</html>
