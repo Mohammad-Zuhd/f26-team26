@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Team Roster | RecLeague</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar bg-white border-bottom shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="dashboard.html">
+        <img src="../images/recleague-logo.png" alt="RecLeague Logo" width="100" height="100" class="me-2">
+        <span class="fw-bold fs-4" style="color: #123C73;">RecLeague</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-4">
+        <a href="dashboard.html" class="text-decoration-none" style="color: #123C73;">Dashboard</a>
+        <a href="manage-teams.html" class="text-decoration-none text-secondary">My Teams</a>
+        <a href="post-open-spots.html" class="text-decoration-none text-secondary">Open Spots</a>
+        <a href="roster.html" class="text-decoration-none fw-bold" style="color: #123C73;">Roster</a>
+        <a href="reviews.html" class="text-decoration-none text-secondary">Reviews</a>
+        <a href="../index.html" class="btn text-white" style="background-color: #123C73;">Log Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="py-5 text-white" style="background-color: #123C73;">
+    <div class="container">
+      <span class="badge mb-3" style="background-color: #F15A29;">TEAM CAPTAIN</span>
+      <h1 class="fw-bold">Team Roster</h1>
+      <p class="mb-0">View your players and manage requests to join your team.</p>
+    </div>
+  </section>
+
+  <main class="container my-5">
+
+    <!-- Select Team -->
+<div class="card border-0 shadow-sm rounded-4 mb-5">
+  <div class="card-body p-4">
+    <h2 class="fw-bold mb-3" style="color: #123C73;">Select a Team</h2>
+
+    <div class="d-flex flex-wrap gap-3">
+      <a href="#genyuRoster" class="btn text-white" style="background-color: #123C73;">
+        Genyu Forces
+      </a>
+
+      <a href="#saiyansRoster" class="btn text-white" style="background-color: #123C73;">
+        The Saiyans
+      </a>
+
+      <a href="#zfightersRoster" class="btn text-white" style="background-color: #123C73;">
+        The Z fighters
+      </a>
+    </div>
+  </div>
+</div>
+
+    <!-- Team Information -->
+   <!-- Genyu Forces Roster -->
+<div id="genyuRoster" class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="../images/Genyu-Forces.jpg" alt="Genyu Forces"
+               class="w-100 h-100" style="object-fit: cover; min-height: 200px;">
+        </div>
+
+        <div class="col-md-8">
+          <div class="card-body p-4">
+            <span class="badge mb-2" style="background-color: #F15A29;">YOUR TEAM</span>
+            <h3 class="fw-bold" style="color: #123C73;">Genyu Forces</h3>
+            <p class="text-muted">Basketball | Intermediate</p>
+            <p><strong>Schedule:</strong> Tuesdays, 6 PM</p>
+            <p class="mb-0"><strong>Available Spots:</strong> 2</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Team Members -->
+    <h2 class="fw-bold mb-3" style="color: #123C73;">Current Team Members</h2>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+      <div class="card-body p-4">
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Position</th>
+                <th>Skill Level</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Mohammad Zuhd</td>
+                <td>Point Guard</td>
+                <td>Intermediate</td>
+                <td><span class="badge bg-success">Active</span></td>
+              </tr>
+
+              <tr>
+                <td>Goran Ali</td>
+                <td>Shooting Guard</td>
+                <td>Intermediate</td>
+                <td><span class="badge bg-success">Active</span></td>
+              </tr>
+
+              <tr>
+                <td>Alex Johnson</td>
+                <td>Center</td>
+                <td>Advanced</td>
+                <td><span class="badge bg-success">Active</span></td>
+              </tr>
+
+              <tr>
+                <td>Chris Smith</td>
+                <td>Power Forward</td>
+                <td>Intermediate</td>
+                <td><span class="badge bg-success">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pending Join Requests -->
+    <h2 class="fw-bold mb-3" style="color: #123C73;">Pending Join Requests</h2>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+      <div class="card-body p-4">
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Preferred Position</th>
+                <th>Skill Level</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Daniel Brown</td>
+                <td>Small Forward</td>
+                <td>Intermediate</td>
+                <td>
+                  <button type="button" class="btn btn-success btn-sm">Approve</button>
+                  <button type="button" class="btn btn-outline-danger btn-sm">Decline</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Michael Davis</td>
+                <td>Point Guard</td>
+                <td>Beginner</td>
+                <td>
+                  <button type="button" class="btn btn-success btn-sm">Approve</button>
+                  <button type="button" class="btn btn-outline-danger btn-sm">Decline</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- The Saiyans Roster -->
+<div id="saiyansRoster" class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="../images/Saiyans.jpg" alt="The Saiyans"
+           class="w-100 h-100" style="object-fit: cover; min-height: 200px;">
+    </div>
+
+    <div class="col-md-8">
+      <div class="card-body p-4">
+        <span class="badge mb-2" style="background-color: #F15A29;">YOUR TEAM</span>
+        <h3 class="fw-bold" style="color: #123C73;">The Saiyans</h3>
+        <p class="text-muted">Soccer | Intermediate</p>
+        <p><strong>Schedule:</strong> Sundays, 6 PM</p>
+        <p class="mb-0"><strong>Available Spots:</strong> 4</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="fw-bold mb-3" style="color: #123C73;">The Saiyans — Current Team Members</h2>
+
+<div class="card border-0 shadow-sm rounded-4 mb-5">
+  <div class="card-body p-4">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Player Name</th>
+            <th>Position</th>
+            <th>Skill Level</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Jordan Lee</td>
+            <td>Forward</td>
+            <td>Intermediate</td>
+            <td><span class="badge bg-success">Active</span></td>
+          </tr>
+          <tr>
+            <td>Sam Wilson</td>
+            <td>Midfielder</td>
+            <td>Intermediate</td>
+            <td><span class="badge bg-success">Active</span></td>
+          </tr>
+          <tr>
+            <td>Taylor Green</td>
+            <td>Goalkeeper</td>
+            <td>Advanced</td>
+            <td><span class="badge bg-success">Active</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<h2 class="fw-bold mb-3" style="color: #123C73;">The Saiyans — Pending Join Requests</h2>
+
+<div class="card border-0 shadow-sm rounded-4 mb-5">
+  <div class="card-body p-4">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Player Name</th>
+            <th>Preferred Position</th>
+            <th>Skill Level</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Casey Adams</td>
+            <td>Defender</td>
+            <td>Intermediate</td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm">Approve</button>
+              <button type="button" class="btn btn-outline-danger btn-sm">Decline</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- The Z fighters Roster -->
+<div id="zfightersRoster" class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="../images/Z-fighters.jpg" alt="The Z fighters"
+           class="w-100 h-100" style="object-fit: cover; min-height: 200px;">
+    </div>
+
+    <div class="col-md-8">
+      <div class="card-body p-4">
+        <span class="badge mb-2" style="background-color: #F15A29;">YOUR TEAM</span>
+        <h3 class="fw-bold" style="color: #123C73;">The Z fighters</h3>
+        <p class="text-muted">Volleyball | Advanced</p>
+        <p><strong>Schedule:</strong> Thursdays, 6 PM</p>
+        <p class="mb-0"><strong>Available Spots:</strong> 1</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="fw-bold mb-3" style="color: #123C73;">The Z fighters — Current Team Members</h2>
+
+<div class="card border-0 shadow-sm rounded-4 mb-5">
+  <div class="card-body p-4">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Player Name</th>
+            <th>Position</th>
+            <th>Skill Level</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Alex Rivera</td>
+            <td>Setter</td>
+            <td>Advanced</td>
+            <td><span class="badge bg-success">Active</span></td>
+          </tr>
+          <tr>
+            <td>Jamie Carter</td>
+            <td>Outside Hitter</td>
+            <td>Advanced</td>
+            <td><span class="badge bg-success">Active</span></td>
+          </tr>
+          <tr>
+            <td>Morgan Blake</td>
+            <td>Libero</td>
+            <td>Advanced</td>
+            <td><span class="badge bg-success">Active</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<h2 class="fw-bold mb-3" style="color: #123C73;">The Z fighters — Pending Join Requests</h2>
+
+<div class="card border-0 shadow-sm rounded-4 mb-5">
+  <div class="card-body p-4">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Player Name</th>
+            <th>Preferred Position</th>
+            <th>Skill Level</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Riley Cooper</td>
+            <td>Middle Blocker</td>
+            <td>Advanced</td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm">Approve</button>
+              <button type="button" class="btn btn-outline-danger btn-sm">Decline</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+    <!-- Back to Dashboard -->
+    <a href="dashboard.html" class="btn text-white" style="background-color: #123C73;">
+      Back to Dashboard
+    </a>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-4 text-white text-center" style="background-color: #123C73;">
+    <p class="fw-bold mb-1">RecLeague</p>
+    <p class="mb-0 small">Connecting players. Building teams.</p>
+  </footer>
+
+</body>
+</html>
