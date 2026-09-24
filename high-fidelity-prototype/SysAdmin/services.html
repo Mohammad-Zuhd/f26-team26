@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderate Services | RecLeague</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar bg-white border-bottom shadow-sm">
+        <div class="container">
+
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="../images/recleague-logo.png"
+                     alt="RecLeague Logo"
+                     width="100"
+                     height="100"
+                     class="me-2">
+
+                <span class="fw-bold fs-4" style="color: #123C73;">
+                    RecLeague
+                </span>
+            </a>
+
+            <div class="d-flex align-items-center gap-4">
+
+                <a href="index.html"
+                   class="text-decoration-none text-secondary">
+                    Dashboard
+                </a>
+
+                <a href="users.html"
+                   class="text-decoration-none text-secondary">
+                    Users
+                </a>
+
+                <a href="services.html"
+                   class="text-decoration-none fw-bold"
+                   style="color: #123C73;">
+                    Services
+                </a>
+
+                <a href="reviews.html"
+                   class="text-decoration-none text-secondary">
+                    Reviews
+                </a>
+
+                <a href="statistics.html"
+                   class="text-decoration-none text-secondary">
+                    Statistics
+                </a>
+
+                <a href="../index.html"
+                   class="btn text-white"
+                   style="background-color: #123C73;">
+                    Log Out
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="py-5 text-white"
+             style="background-color: #123C73;">
+
+        <div class="container">
+
+            <span class="badge mb-3"
+                  style="background-color: #F15A29;">
+                CONTENT MODERATION
+            </span>
+
+            <h1 class="display-5 fw-bold mb-3">
+                Moderate Services
+            </h1>
+
+            <p class="fs-5 mb-0">
+                Review team listings and roster posts that may be
+                inappropriate, misleading, or inactive.
+            </p>
+
+        </div>
+    </section>
+
+    <!-- Service Moderation -->
+    <main class="container my-5">
+
+        <h2 class="fw-bold" style="color: #123C73;">
+            Reported Services
+        </h2>
+
+        <p class="text-muted mb-4">
+            Review reported content and decide whether it should remain on the platform.
+        </p>
+
+        <!-- First Service -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+            <div class="card-body p-4">
+
+                <span class="badge mb-3"
+                      style="background-color: #F15A29;">
+                    TEAM LISTING
+                </span>
+
+                <h4 class="fw-bold"
+                    style="color: #123C73;">
+                    Greensboro Basketball Club
+                </h4>
+
+                <p>
+                    <strong>Status:</strong>
+                    <span class="badge bg-danger">
+                        Reported
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Reason:</strong>
+                    Listing may contain misleading information.
+                </p>
+
+                <button class="btn text-white"
+                        style="background-color: #123C73;">
+                    Keep Listing
+                </button>
+
+                <button class="btn btn-danger">
+                    Remove Listing
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Second Service -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+            <div class="card-body p-4">
+
+                <span class="badge mb-3"
+                      style="background-color: #F15A29;">
+                    ROSTER POST
+                </span>
+
+                <h4 class="fw-bold"
+                    style="color: #123C73;">
+                    Weekend Soccer Sub Needed
+                </h4>
+
+                <p>
+                    <strong>Status:</strong>
+                    <span class="badge bg-warning text-dark">
+                        Inactive
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Reason:</strong>
+                    Post has not been updated recently.
+                </p>
+
+                <button class="btn text-white"
+                        style="background-color: #123C73;">
+                    Keep Post
+                </button>
+
+                <button class="btn btn-danger">
+                    Remove Post
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Third Service -->
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <span class="badge mb-3"
+                      style="background-color: #F15A29;">
+                    TEAM LISTING
+                </span>
+
+                <h4 class="fw-bold"
+                    style="color: #123C73;">
+                    Downtown Volleyball Team
+                </h4>
+
+                <p>
+                    <strong>Status:</strong>
+                    <span class="badge bg-danger">
+                        Reported
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Reason:</strong>
+                    Content may violate platform rules.
+                </p>
+
+                <button class="btn text-white"
+                        style="background-color: #123C73;">
+                    Keep Listing
+                </button>
+
+                <button class="btn btn-danger">
+                    Remove Listing
+                </button>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 text-white text-center"
+            style="background-color: #123C73;">
+
+        <p class="fw-bold mb-1">
+            RecLeague
+        </p>
+
+        <p class="mb-0 small">
+            Connecting players. Building teams.
+        </p>
+
+    </footer>
+
+</body>
+</html>
