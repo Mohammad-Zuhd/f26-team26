@@ -1,5 +1,4 @@
 
-
 package _Project.RecLeague_API.controller;
 
 import java.net.URI;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import _Project.RecLeague_API.dto.JoinRequestResponse;
 import _Project.RecLeague_API.dto.OpenSpotRequest;
 import _Project.RecLeague_API.dto.OpenSpotResponse;
 import _Project.RecLeague_API.dto.TeamCaptainRegistrationRequest;
@@ -23,6 +23,7 @@ import _Project.RecLeague_API.dto.TeamCaptainUpdateRequest;
 import _Project.RecLeague_API.dto.TeamRequest;
 import _Project.RecLeague_API.dto.TeamResponse;
 import _Project.RecLeague_API.service.OpenSpotService;
+import _Project.RecLeague_API.service.RosterService;
 import _Project.RecLeague_API.service.TeamCaptainService;
 import _Project.RecLeague_API.service.TeamService;
 import jakarta.validation.Valid;
@@ -34,18 +35,21 @@ public class TeamCaptainController {
     private final TeamCaptainService captainService;
     private final TeamService teamService;
     private final OpenSpotService openSpotService;
+    private final RosterService rosterService;
 
     public TeamCaptainController(
             TeamCaptainService captainService,
             TeamService teamService,
-            OpenSpotService openSpotService) {
+            OpenSpotService openSpotService,
+            RosterService rosterService) {
 
         this.captainService = captainService;
         this.teamService = teamService;
         this.openSpotService = openSpotService;
+        this.rosterService = rosterService;
     }
 
-    // Register a new Team Captain.
+    // Register a Team Captain.
     @PostMapping
     public ResponseEntity<TeamCaptainResponse> register(
             @Valid @RequestBody TeamCaptainRegistrationRequest request) {
@@ -74,7 +78,7 @@ public class TeamCaptainController {
         return captainService.updateProfile(captainId, request);
     }
 
-    // Create a new team.
+    // Create a team.
     @PostMapping("/{captainId}/teams")
     public ResponseEntity<TeamResponse> createTeam(
             @PathVariable Long captainId,
@@ -88,7 +92,7 @@ public class TeamCaptainController {
                 .body(team);
     }
 
-    // View all teams belonging to a captain.
+    // View the captain's teams.
     @GetMapping("/{captainId}/teams")
     public List<TeamResponse> getTeams(
             @PathVariable Long captainId) {
@@ -96,7 +100,7 @@ public class TeamCaptainController {
         return teamService.listTeams(captainId);
     }
 
-    // Update an existing team.
+    // Update a team.
     @PutMapping("/{captainId}/teams/{teamId}")
     public TeamResponse updateTeam(
             @PathVariable Long captainId,
@@ -106,7 +110,7 @@ public class TeamCaptainController {
         return teamService.update(captainId, teamId, request);
     }
 
-    // Post a new open roster spot.
+    // Post an open roster spot.
     @PostMapping("/{captainId}/teams/{teamId}/spots")
     public ResponseEntity<OpenSpotResponse> createOpenSpot(
             @PathVariable Long captainId,
@@ -123,7 +127,7 @@ public class TeamCaptainController {
                 .body(spot);
     }
 
-    // View all open spot postings for a team.
+    // View a team's open spot postings.
     @GetMapping("/{captainId}/teams/{teamId}/spots")
     public List<OpenSpotResponse> getOpenSpots(
             @PathVariable Long captainId,
@@ -132,7 +136,7 @@ public class TeamCaptainController {
         return openSpotService.listSpots(captainId, teamId);
     }
 
-    // Edit an existing open spot posting.
+    // Update an open spot.
     @PutMapping("/{captainId}/teams/{teamId}/spots/{spotId}")
     public OpenSpotResponse updateOpenSpot(
             @PathVariable Long captainId,
@@ -144,7 +148,7 @@ public class TeamCaptainController {
                 captainId, teamId, spotId, request);
     }
 
-    // Close an open spot without deleting it.
+    // Close an open spot.
     @PatchMapping("/{captainId}/teams/{teamId}/spots/{spotId}/close")
     public OpenSpotResponse closeOpenSpot(
             @PathVariable Long captainId,
@@ -152,5 +156,43 @@ public class TeamCaptainController {
             @PathVariable Long spotId) {
 
         return openSpotService.close(captainId, teamId, spotId);
+    }
+
+    // View pending join requests for a team.
+    @GetMapping("/{captainId}/teams/{teamId}/join-requests")
+    public List<JoinRequestResponse> getPendingRequests(
+            @PathVariable Long captainId,
+            @PathVariable Long teamId) {
+
+        return rosterService.pendingRequests(captainId, teamId);
+    }
+
+    // View approved team members.
+    @GetMapping("/{captainId}/teams/{teamId}/roster")
+    public List<JoinRequestResponse> getRoster(
+            @PathVariable Long captainId,
+            @PathVariable Long teamId) {
+
+        return rosterService.roster(captainId, teamId);
+    }
+
+    // Approve a player's request.
+    @PatchMapping("/{captainId}/teams/{teamId}/join-requests/{requestId}/approve")
+    public JoinRequestResponse approveJoinRequest(
+            @PathVariable Long captainId,
+            @PathVariable Long teamId,
+            @PathVariable Long requestId) {
+
+        return rosterService.approve(captainId, teamId, requestId);
+    }
+
+    // Decline a player's request.
+    @PatchMapping("/{captainId}/teams/{teamId}/join-requests/{requestId}/decline")
+    public JoinRequestResponse declineJoinRequest(
+            @PathVariable Long captainId,
+            @PathVariable Long teamId,
+            @PathVariable Long requestId) {
+
+        return rosterService.decline(captainId, teamId, requestId);
     }
 }
