@@ -21,6 +21,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Modifying
     @Query("DELETE FROM Review r WHERE r.team.id = :teamId")
     void deleteByTeamId(@Param("teamId") Long teamId);
+    
 // --- Goran: player-side lookups (#31) ---
 
     // All reviews written by one player

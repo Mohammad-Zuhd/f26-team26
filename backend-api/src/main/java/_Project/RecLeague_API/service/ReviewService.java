@@ -1,4 +1,3 @@
-
 package _Project.RecLeague_API.service;
 
 import java.util.List;
@@ -122,5 +121,46 @@ public class ReviewService {
 
         return ReviewResponse.from(
                 reviewRepository.save(review));
+    }
+
+    //  Goran: player-side review management (#31)
+
+    // the PLAYER: view the reviews I've written.
+    @Transactional(readOnly = true)
+    public List<ReviewResponse> playerReviews(Long playerId) {
+
+        if (!playerRepository.existsById(playerId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Player not found.");
+        }
+
+        return reviewRepository.findAllByPlayerIdOrderById(playerId)
+                .stream()
+                .map(ReviewResponse::from)
+                .toList();
+    }
+
+    // PLAYER: edit my review. The captain's reply (if any) stays.
+    public ReviewResponse updateReview(
+            Long playerId, Long reviewId, ReviewRequest request) {
+
+        Review review = findPlayerReview(playerId, reviewId);
+        review.setRating(request.rating());
+        review.setComment(request.comment().trim());
+
+        return ReviewResponse.from(reviewRepository.save(review));
+    }
+
+    // PLAYER: delete my review.
+    public void deleteReview(Long playerId, Long reviewId) {
+        reviewRepository.delete(findPlayerReview(playerId, reviewId));
+    }
+
+    // Finds a review only if this player wrote it, otherwise itll be 404.
+    private Review findPlayerReview(Long playerId, Long reviewId) {
+        return reviewRepository.findByIdAndPlayerId(reviewId, playerId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Review not found for this player."));
     }
 }
