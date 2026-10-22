@@ -31,4 +31,8 @@ public interface JoinRequestRepository extends JpaRepository<JoinRequest, Long> 
     @Modifying
     @Query("DELETE FROM JoinRequest j WHERE j.team.id = :teamId")
     void deleteByTeamId(@Param("teamId") Long teamId);
+
+        // Finding a request only if it belongs to this player,
+    // so a player can't cancel someone else's request
+    Optional<JoinRequest> findByIdAndPlayerId(Long id, Long playerId);
 }
