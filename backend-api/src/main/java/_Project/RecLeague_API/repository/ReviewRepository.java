@@ -1,4 +1,3 @@
-
 package _Project.RecLeague_API.repository;
 
 import java.util.List;
@@ -22,4 +21,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Modifying
     @Query("DELETE FROM Review r WHERE r.team.id = :teamId")
     void deleteByTeamId(@Param("teamId") Long teamId);
+// --- Goran: player-side lookups (#31) ---
+
+    // All reviews written by one player
+    List<Review> findAllByPlayerIdOrderById(Long playerId);
+
+    // Find a review only if this player wrote it,
+    // so players can't edit or delete other people's reviews
+    Optional<Review> findByIdAndPlayerId(Long id, Long playerId);
 }
