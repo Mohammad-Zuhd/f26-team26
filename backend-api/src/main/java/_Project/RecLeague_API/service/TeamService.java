@@ -12,6 +12,9 @@ import _Project.RecLeague_API.dto.TeamRequest;
 import _Project.RecLeague_API.dto.TeamResponse;
 import _Project.RecLeague_API.entity.Team;
 import _Project.RecLeague_API.entity.TeamCaptain;
+import _Project.RecLeague_API.repository.JoinRequestRepository;
+import _Project.RecLeague_API.repository.OpenSpotRepository;
+import _Project.RecLeague_API.repository.ReviewRepository;
 import _Project.RecLeague_API.repository.TeamCaptainRepository;
 import _Project.RecLeague_API.repository.TeamRepository;
 
@@ -24,11 +27,22 @@ public class TeamService {
 
     private final TeamRepository teamRepository;
     private final TeamCaptainRepository captainRepository;
+    private final OpenSpotRepository openSpotRepository;
+    private final JoinRequestRepository joinRequestRepository;
+    private final ReviewRepository reviewRepository;
 
-    public TeamService(TeamRepository teamRepository,
-                       TeamCaptainRepository captainRepository) {
+    public TeamService(
+            TeamRepository teamRepository,
+            TeamCaptainRepository captainRepository,
+            OpenSpotRepository openSpotRepository,
+            JoinRequestRepository joinRequestRepository,
+            ReviewRepository reviewRepository) {
+
         this.teamRepository = teamRepository;
         this.captainRepository = captainRepository;
+        this.openSpotRepository = openSpotRepository;
+        this.joinRequestRepository = joinRequestRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     // Create a new team for a Team Captain.
@@ -49,21 +63,53 @@ public class TeamService {
 
         findCaptain(captainId);
 
-        return teamRepository.findAllByCaptainIdOrderById(captainId).stream().map(TeamResponse::from).toList();
+        return teamRepository.findAllByCaptainIdOrderById(captainId)
+                .stream()
+                .map(TeamResponse::from)
+                .toList();
     }
 
     // Update an existing team belonging to a Team Captain.
-    public TeamResponse update(Long captainId, Long teamId,
-                               TeamRequest request) {
+    public TeamResponse update(
+            Long captainId,
+            Long teamId,
+            TeamRequest request) {
 
-        Team team = teamRepository.findByIdAndCaptainId(teamId, captainId)
+        Team team = teamRepository.findByIdAndCaptainId(
+                        teamId, captainId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Team " + teamId + " was not found for this captain."));
+                        "Team " + teamId
+                                + " was not found for this captain."));
 
         apply(team, request);
 
         return TeamResponse.from(teamRepository.save(team));
+    }
+
+    // Delete a team belonging to a Team Captain.
+    public void delete(Long captainId, Long teamId) {
+
+        // Verify that the team belongs to the specified captain.
+        Team team = teamRepository.findByIdAndCaptainId(
+                        teamId, captainId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Team " + teamId
+                                + " was not found for this captain."));
+
+        // Remove related records before deleting the team.
+        reviewRepository.deleteByTeamId(teamId);
+
+        joinRequestRepository.deleteByTeamId(teamId);
+
+        openSpotRepository.deleteByTeamId(teamId);
+
+        // Finally, delete the team itself.
+        teamRepository.delete(team);
+
+        // Execute the delete before the transaction completes.
+        teamRepository.flush();
     }
 
     // Apply team information from a request.
@@ -83,6 +129,7 @@ public class TeamService {
         return captainRepository.findById(captainId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Team Captain " + captainId + " was not found."));
+                        "Team Captain " + captainId
+                                + " was not found."));
     }
 }

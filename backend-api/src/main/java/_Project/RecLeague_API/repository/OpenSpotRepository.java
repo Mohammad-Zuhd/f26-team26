@@ -5,17 +5,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import _Project.RecLeague_API.entity.OpenSpot;
 
-/**
- * Handles database operations for open roster spots.
- */
 public interface OpenSpotRepository extends JpaRepository<OpenSpot, Long> {
 
-    // Find all open spot postings for a team.
     List<OpenSpot> findAllByTeamIdOrderById(Long teamId);
 
-    // Find a specific posting belonging to a team.
     Optional<OpenSpot> findByIdAndTeamId(Long id, Long teamId);
+
+    // Delete all open spots belonging to a team.
+    @Modifying
+    @Query("DELETE FROM OpenSpot o WHERE o.team.id = :teamId")
+    void deleteByTeamId(@Param("teamId") Long teamId);
 }
