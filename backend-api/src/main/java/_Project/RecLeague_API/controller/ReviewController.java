@@ -1,14 +1,15 @@
-
 package _Project.RecLeague_API.controller;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,5 +64,35 @@ public class ReviewController {
 
         return reviewService.reply(
                 captainId, teamId, reviewId, request);
+    }
+
+    // Goran: player side review endpoints (#31) 
+
+    // Player views reviews they wrote -> 200
+    @GetMapping("/players/{playerId}/reviews")
+    public List<ReviewResponse> getMyReviews(
+            @PathVariable Long playerId) {
+
+        return reviewService.playerReviews(playerId);
+    }
+
+    // when the Player edits their review -> 200
+    @PutMapping("/players/{playerId}/reviews/{reviewId}")
+    public ReviewResponse updateReview(
+            @PathVariable Long playerId,
+            @PathVariable Long reviewId,
+            @Valid @RequestBody ReviewRequest request) {
+
+        return reviewService.updateReview(playerId, reviewId, request);
+    }
+
+    // when the Player deletes their review -> 204
+    @DeleteMapping("/players/{playerId}/reviews/{reviewId}")
+    public ResponseEntity<Void> deleteReview(
+            @PathVariable Long playerId,
+            @PathVariable Long reviewId) {
+
+        reviewService.deleteReview(playerId, reviewId);
+        return ResponseEntity.noContent().build();
     }
 }
