@@ -169,4 +169,39 @@ public class RosterService {
                     "Only pending requests can be approved or declined.");
         }
     }
+
+        // the PLAYER: view all my join requests (pending, approved, declined).
+    // The approved request ones are the teams I'm on
+    @Transactional(readOnly = true)
+    public List<JoinRequestResponse> playerRequests(Long playerId) {
+
+        if (!playerRepository.existsById(playerId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Player not found.");
+        }
+
+        return requestRepository.findAllByPlayerIdOrderById(playerId)
+                .stream()
+                .map(JoinRequestResponse::from)
+                .toList();
+    }
+
+    // PLAYER: cancel a request the captain hasn't answered yet.
+    public void cancelRequest(Long playerId, Long requestId) {
+
+        JoinRequest request = requestRepository
+                .findByIdAndPlayerId(requestId, playerId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Join request not found for this player."));
+
+        // and for this, Once the captain approves or declines, it can't be cancelled
+        if (!"PENDING".equals(request.getStatus())) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Only pending requests can be cancelled.");
+        }
+
+        requestRepository.delete(request);
+    }
 }
