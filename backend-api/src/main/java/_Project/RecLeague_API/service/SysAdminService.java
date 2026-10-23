@@ -1,6 +1,8 @@
 package _Project.RecLeague_API.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,8 @@ import _Project.RecLeague_API.repository.TeamCaptainRepository;
 import _Project.RecLeague_API.repository.TeamRepository;
 
 // This class contains the backend logic for SysAdmin features.
-// The controller will call this service, and this service will
-// use the repositories to read or change data in the database.
+// The controller calls this service, and this service uses
+// the repositories to read or change data in the database.
 @Service
 @Transactional
 public class SysAdminService {
@@ -72,5 +74,28 @@ public class SysAdminService {
         }
 
         teamRepository.deleteById(teamId);
+    }
+
+    // ---------------- VIEW USAGE STATISTICS ----------------
+
+    // Count the current users and teams in the database.
+    // LinkedHashMap keeps the statistics in the same order
+    // when they are returned as JSON.
+    @Transactional(readOnly = true)
+    public Map<String, Long> getUsageStatistics() {
+
+        long playerCount = playerRepository.count();
+        long captainCount = captainRepository.count();
+        long teamCount = teamRepository.count();
+        long totalUsers = playerCount + captainCount;
+
+        Map<String, Long> statistics = new LinkedHashMap<>();
+
+        statistics.put("players", playerCount);
+        statistics.put("teamCaptains", captainCount);
+        statistics.put("totalUsers", totalUsers);
+        statistics.put("teams", teamCount);
+
+        return statistics;
     }
 }

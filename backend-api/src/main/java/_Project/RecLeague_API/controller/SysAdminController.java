@@ -1,6 +1,7 @@
 package _Project.RecLeague_API.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,14 +17,15 @@ import _Project.RecLeague_API.entity.TeamCaptain;
 import _Project.RecLeague_API.service.SysAdminService;
 
 // This controller creates the API endpoints used by the SysAdmin.
-// The controller receives requests, then sends the work to SysAdminService.
+// The controller receives requests and sends the work to SysAdminService.
 @RestController
 @RequestMapping("/api/sysadmin")
 public class SysAdminController {
 
     private final SysAdminService sysAdminService;
 
-    // Spring automatically gives the controller access to SysAdminService.
+    // Spring automatically gives this controller access to SysAdminService.
+    // This is called constructor injection.
     public SysAdminController(SysAdminService sysAdminService) {
         this.sysAdminService = sysAdminService;
     }
@@ -60,5 +62,14 @@ public class SysAdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeam(@PathVariable Long id) {
         sysAdminService.deleteTeam(id);
+    }
+
+    // ---------------- VIEW USAGE STATISTICS ----------------
+
+    // Return counts of players, captains, total users, and teams.
+    // GET /api/sysadmin/statistics
+    @GetMapping("/statistics")
+    public Map<String, Long> getUsageStatistics() {
+        return sysAdminService.getUsageStatistics();
     }
 }
