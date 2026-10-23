@@ -12,22 +12,27 @@ import _Project.RecLeague_API.entity.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
+    // Get all reviews for one team.
     List<Review> findAllByTeamIdOrderById(Long teamId);
 
-    Optional<Review> findByIdAndTeamId(
-            Long id, Long teamId);
+    // Find one review only if it belongs to the specified team.
+    Optional<Review> findByIdAndTeamId(Long id, Long teamId);
 
-    // Delete all reviews belonging to a team.
+    // Delete all reviews connected to a team.
+    // This is used before a team is deleted.
     @Modifying
     @Query("DELETE FROM Review r WHERE r.team.id = :teamId")
     void deleteByTeamId(@Param("teamId") Long teamId);
-    
-// --- Goran: player-side lookups (#31) ---
 
-    // All reviews written by one player
+    // Get all reviews written by one player.
     List<Review> findAllByPlayerIdOrderById(Long playerId);
 
-    // Find a review only if this player wrote it,
-    // so players can't edit or delete other people's reviews
+    // Find one review only if it belongs to the specified player.
     Optional<Review> findByIdAndPlayerId(Long id, Long playerId);
+
+    // Delete all reviews written by a player.
+    // SysAdmin can use this before removing the Player account.
+    @Modifying
+    @Query("DELETE FROM Review r WHERE r.player.id = :playerId")
+    void deleteByPlayerId(@Param("playerId") Long playerId);
 }

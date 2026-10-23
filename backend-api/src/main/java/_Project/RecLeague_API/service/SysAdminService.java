@@ -13,6 +13,7 @@ import _Project.RecLeague_API.entity.Player;
 import _Project.RecLeague_API.entity.Review;
 import _Project.RecLeague_API.entity.Team;
 import _Project.RecLeague_API.entity.TeamCaptain;
+import _Project.RecLeague_API.repository.JoinRequestRepository;
 import _Project.RecLeague_API.repository.PlayerRepository;
 import _Project.RecLeague_API.repository.ReviewRepository;
 import _Project.RecLeague_API.repository.TeamCaptainRepository;
@@ -20,30 +21,33 @@ import _Project.RecLeague_API.repository.TeamRepository;
 
 // This class contains the backend logic for SysAdmin features.
 // The controller calls this service, and this service uses
-// the repositories to read or change data in the database.
+// the repositories and existing services to manage RecLeague data.
 @Service
 @Transactional
 public class SysAdminService {
 
-    // These repositories let the SysAdmin service access
-    // players, team captains, teams, and reviews stored in PostgreSQL.
     private final PlayerRepository playerRepository;
     private final TeamCaptainRepository captainRepository;
     private final TeamRepository teamRepository;
     private final ReviewRepository reviewRepository;
+    private final JoinRequestRepository joinRequestRepository;
+    private final TeamService teamService;
 
-    // Spring automatically gives this service the repositories it needs.
-    // This is called constructor injection.
+    // Spring automatically gives this service everything it needs.
     public SysAdminService(
             PlayerRepository playerRepository,
             TeamCaptainRepository captainRepository,
             TeamRepository teamRepository,
-            ReviewRepository reviewRepository) {
+            ReviewRepository reviewRepository,
+            JoinRequestRepository joinRequestRepository,
+            TeamService teamService) {
 
         this.playerRepository = playerRepository;
         this.captainRepository = captainRepository;
         this.teamRepository = teamRepository;
         this.reviewRepository = reviewRepository;
+        this.joinRequestRepository = joinRequestRepository;
+        this.teamService = teamService;
     }
 
     // ---------------- MANAGE USER ACCESS ----------------
@@ -61,7 +65,6 @@ public class SysAdminService {
     }
 
     // Change a Player account status.
-    // SysAdmin can use this to activate or suspend an account.
     // Only ACTIVE and SUSPENDED are allowed.
     public Player updatePlayerStatus(Long playerId, String status) {
 
@@ -70,17 +73,95 @@ public class SysAdminService {
                         HttpStatus.NOT_FOUND,
                         "Player " + playerId + " was not found."));
 
+        String newStatus = validateAccountStatus(status);
+
+        player.setAccountStatus(newStatus);
+
+        return playerRepository.save(player);
+    }
+
+    // Change a Team Captain account status.
+    // SysAdmin can activate or suspend a captain account.
+    public TeamCaptain updateCaptainStatus(Long captainId, String status) {
+
+        TeamCaptain captain = captainRepository.findById(captainId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Team Captain " + captainId + " was not found."));
+
+        String newStatus = validateAccountStatus(status);
+
+        captain.setAccountStatus(newStatus);
+
+        return captainRepository.save(captain);
+    }
+
+    // Remove a Player account.
+    // Reviews and join requests reference the Player,
+    // so those records must be removed first.
+    public void deletePlayer(Long playerId) {
+
+        if (!playerRepository.existsById(playerId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Player " + playerId + " was not found.");
+        }
+
+        // Remove records that depend on this Player.
+        reviewRepository.deleteByPlayerId(playerId);
+        joinRequestRepository.deleteByPlayerId(playerId);
+
+        // Now the Player can safely be removed.
+        playerRepository.deleteById(playerId);
+    }
+
+    // Remove a Team Captain account.
+    // A captain may own one or more teams, so each team must be
+    // safely removed before deleting the captain account.
+    public void deleteCaptain(Long captainId) {
+
+        if (!captainRepository.existsById(captainId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Team Captain " + captainId + " was not found.");
+        }
+
+        // Get all teams managed by this captain.
+        List<Team> captainTeams =
+                teamRepository.findAllByCaptainIdOrderById(captainId);
+
+        // Use the existing TeamService deletion logic.
+        // It already removes reviews, join requests,
+        // open spots, and games before deleting a team.
+        for (Team team : captainTeams) {
+            teamService.delete(captainId, team.getId());
+        }
+
+        // After the captain's teams are removed,
+        // the captain account can safely be deleted.
+        captainRepository.deleteById(captainId);
+    }
+
+    // Make sure an account status is valid.
+    private String validateAccountStatus(String status) {
+
+        if (status == null || status.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Account status is required.");
+        }
+
         String newStatus = status.trim().toUpperCase();
 
-        if (!newStatus.equals("ACTIVE") && !newStatus.equals("SUSPENDED")) {
+        if (!newStatus.equals("ACTIVE")
+                && !newStatus.equals("SUSPENDED")) {
+
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Account status must be ACTIVE or SUSPENDED.");
         }
 
-        player.setAccountStatus(newStatus);
-
-        return playerRepository.save(player);
+        return newStatus;
     }
 
     // ---------------- MODERATE SERVICES ----------------
@@ -91,17 +172,18 @@ public class SysAdminService {
         return teamRepository.findAll();
     }
 
-    // Remove a team listing by ID.
-    // If the team does not exist, return a 404 error.
+    // Remove a team listing safely.
+    // TeamService already handles deleting all related records.
     public void deleteTeam(Long teamId) {
 
-        if (!teamRepository.existsById(teamId)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Team " + teamId + " was not found.");
-        }
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Team " + teamId + " was not found."));
 
-        teamRepository.deleteById(teamId);
+        Long captainId = team.getCaptain().getId();
+
+        teamService.delete(captainId, teamId);
     }
 
     // ---------------- MODERATE REVIEWS ----------------
@@ -114,7 +196,6 @@ public class SysAdminService {
     }
 
     // Remove a review by ID.
-    // If the review does not exist, return a 404 error.
     public void deleteReview(Long reviewId) {
 
         if (!reviewRepository.existsById(reviewId)) {
@@ -136,6 +217,7 @@ public class SysAdminService {
         long captainCount = captainRepository.count();
         long teamCount = teamRepository.count();
         long reviewCount = reviewRepository.count();
+
         long totalUsers = playerCount + captainCount;
 
         Map<String, Long> statistics = new LinkedHashMap<>();
