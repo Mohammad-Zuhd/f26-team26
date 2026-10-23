@@ -192,6 +192,66 @@ Example response (`200 OK`):
   "captainReply": "Thank you for your review! We're glad you enjoyed playing with us."
 }
 ```
+## SysAdmin
+
+The SysAdmin endpoints allow administrators to manage user access, moderate teams and reviews, and view basic platform usage statistics.
+
+| Method | Path | Purpose | Response code | Error codes |
+| --- | --- | --- | --- | --- |
+| `GET` | `/api/sysadmin/players` | View all player accounts | `200 OK` | — |
+| `GET` | `/api/sysadmin/captains` | View all team captain accounts | `200 OK` | — |
+| `PUT` | `/api/sysadmin/players/{id}/status?status={status}` | Activate or suspend a player account | `200 OK` | `400, 404` |
+| `PUT` | `/api/sysadmin/captains/{id}/status?status={status}` | Activate or suspend a team captain account | `200 OK` | `400, 404` |
+| `DELETE` | `/api/sysadmin/players/{id}` | Remove a player account and associated data | `204 No Content` | `404` |
+| `DELETE` | `/api/sysadmin/captains/{id}` | Remove a team captain account and associated teams | `204 No Content` | `404` |
+| `GET` | `/api/sysadmin/teams` | View all team listings | `200 OK` | — |
+| `DELETE` | `/api/sysadmin/teams/{id}` | Remove a team and its associated data | `204 No Content` | `404` |
+| `GET` | `/api/sysadmin/reviews` | View all reviews | `200 OK` | — |
+| `DELETE` | `/api/sysadmin/reviews/{id}` | Remove a review | `204 No Content` | `404` |
+| `GET` | `/api/sysadmin/statistics` | View platform usage statistics | `200 OK` | — |
+
+Account status can be set to `ACTIVE` or `SUSPENDED`. Any other value returns `400 Bad Request`.
+
+When a player is removed, associated reviews and join requests are also removed. When a team or team captain is removed, associated team data is safely cleaned up before deletion.
+
+### Example SysAdmin Status Update
+
+```http
+PUT /api/sysadmin/players/1/status?status=SUSPENDED
+```
+
+Example response (`200 OK`):
+
+```json
+{
+  "id": 1,
+  "name": "Test Player",
+  "email": "testplayer@example.com",
+  "location": "Greensboro",
+  "preferredSports": "Soccer",
+  "skillLevel": "Beginner",
+  "availability": "Weekends",
+  "accountStatus": "SUSPENDED"
+}
+```
+
+### Example Usage Statistics
+
+```http
+GET /api/sysadmin/statistics
+```
+
+Example response (`200 OK`):
+
+```json
+{
+  "players": 1,
+  "teamCaptains": 0,
+  "totalUsers": 1,
+  "teams": 0,
+  "reviews": 0
+}
+```
 
 ## Status code reference
 
