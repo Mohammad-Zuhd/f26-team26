@@ -12,6 +12,7 @@ import _Project.RecLeague_API.dto.TeamRequest;
 import _Project.RecLeague_API.dto.TeamResponse;
 import _Project.RecLeague_API.entity.Team;
 import _Project.RecLeague_API.entity.TeamCaptain;
+import _Project.RecLeague_API.repository.GameRepository;
 import _Project.RecLeague_API.repository.JoinRequestRepository;
 import _Project.RecLeague_API.repository.OpenSpotRepository;
 import _Project.RecLeague_API.repository.ReviewRepository;
@@ -30,19 +31,22 @@ public class TeamService {
     private final OpenSpotRepository openSpotRepository;
     private final JoinRequestRepository joinRequestRepository;
     private final ReviewRepository reviewRepository;
+    private final GameRepository gameRepository;
 
     public TeamService(
             TeamRepository teamRepository,
             TeamCaptainRepository captainRepository,
             OpenSpotRepository openSpotRepository,
             JoinRequestRepository joinRequestRepository,
-            ReviewRepository reviewRepository) {
+            ReviewRepository reviewRepository,
+            GameRepository gameRepository) {
 
         this.teamRepository = teamRepository;
         this.captainRepository = captainRepository;
         this.openSpotRepository = openSpotRepository;
         this.joinRequestRepository = joinRequestRepository;
         this.reviewRepository = reviewRepository;
+        this.gameRepository = gameRepository;
     }
 
     // Create a new team for a Team Captain.
@@ -90,7 +94,7 @@ public class TeamService {
     // Delete a team belonging to a Team Captain.
     public void delete(Long captainId, Long teamId) {
 
-        // Verify that the team belongs to the specified captain.
+        // Verify the team belongs to the specified captain.
         Team team = teamRepository.findByIdAndCaptainId(
                         teamId, captainId)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -98,17 +102,19 @@ public class TeamService {
                         "Team " + teamId
                                 + " was not found for this captain."));
 
-        // Remove related records before deleting the team.
+        // Delete all records associated with the team.
         reviewRepository.deleteByTeamId(teamId);
 
         joinRequestRepository.deleteByTeamId(teamId);
 
         openSpotRepository.deleteByTeamId(teamId);
 
-        // Finally, delete the team itself.
+        // Delete scheduled games associated with the team.
+        gameRepository.deleteByTeamId(teamId);
+
+        // Delete the team.
         teamRepository.delete(team);
 
-        // Execute the delete before the transaction completes.
         teamRepository.flush();
     }
 
