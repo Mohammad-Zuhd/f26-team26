@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,6 +46,17 @@ public class SysAdminController {
     @GetMapping("/captains")
     public List<TeamCaptain> getAllTeamCaptains() {
         return sysAdminService.getAllTeamCaptains();
+    }
+
+    // Change a Player account status to ACTIVE or SUSPENDED.
+    // Example:
+    // PUT /api/sysadmin/players/1/status?status=SUSPENDED
+    @PutMapping("/players/{id}/status")
+    public Player updatePlayerStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
+
+        return sysAdminService.updatePlayerStatus(id, status);
     }
 
     // ---------------- MODERATE SERVICES ----------------

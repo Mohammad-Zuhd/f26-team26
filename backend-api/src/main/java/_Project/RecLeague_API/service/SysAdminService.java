@@ -55,6 +55,29 @@ public class SysAdminService {
         return captainRepository.findAll();
     }
 
+    // Change a Player account status.
+    // SysAdmin can use this to activate or suspend an account.
+    // Only ACTIVE and SUSPENDED are allowed.
+    public Player updatePlayerStatus(Long playerId, String status) {
+
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Player " + playerId + " was not found."));
+
+        String newStatus = status.trim().toUpperCase();
+
+        if (!newStatus.equals("ACTIVE") && !newStatus.equals("SUSPENDED")) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Account status must be ACTIVE or SUSPENDED.");
+        }
+
+        player.setAccountStatus(newStatus);
+
+        return playerRepository.save(player);
+    }
+
     // ---------------- MODERATE SERVICES ----------------
 
     // Get all team listings so the SysAdmin can review them.
