@@ -19,37 +19,33 @@ import _Project.RecLeague_API.entity.Team;
 import _Project.RecLeague_API.entity.TeamCaptain;
 import _Project.RecLeague_API.service.SysAdminService;
 
-// This controller creates the API endpoints used by the SysAdmin.
-// The controller receives requests and sends the work to SysAdminService.
+// Handles all SysAdmin API requests.
 @RestController
 @RequestMapping("/api/sysadmin")
 public class SysAdminController {
 
     private final SysAdminService sysAdminService;
 
-    // Spring automatically gives this controller access to SysAdminService.
-    // This is called constructor injection.
+    // Spring gives the controller the SysAdmin service automatically.
     public SysAdminController(SysAdminService sysAdminService) {
         this.sysAdminService = sysAdminService;
     }
 
     // ---------------- MANAGE USER ACCESS ----------------
 
-    // Return all Player accounts.
-    // GET /api/sysadmin/players
+    // View all Player accounts.
     @GetMapping("/players")
     public List<Player> getAllPlayers() {
         return sysAdminService.getAllPlayers();
     }
 
-    // Return all Team Captain accounts.
-    // GET /api/sysadmin/captains
+    // View all Team Captain accounts.
     @GetMapping("/captains")
     public List<TeamCaptain> getAllTeamCaptains() {
         return sysAdminService.getAllTeamCaptains();
     }
 
-    // Change a Player account status to ACTIVE or SUSPENDED.
+    // Activate or suspend a Player account.
     // Example:
     // PUT /api/sysadmin/players/1/status?status=SUSPENDED
     @PutMapping("/players/{id}/status")
@@ -60,18 +56,41 @@ public class SysAdminController {
         return sysAdminService.updatePlayerStatus(id, status);
     }
 
+    // Activate or suspend a Team Captain account.
+    // Example:
+    // PUT /api/sysadmin/captains/1/status?status=SUSPENDED
+    @PutMapping("/captains/{id}/status")
+    public TeamCaptain updateCaptainStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
+
+        return sysAdminService.updateCaptainStatus(id, status);
+    }
+
+    // Remove a Player account.
+    @DeleteMapping("/players/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePlayer(@PathVariable Long id) {
+        sysAdminService.deletePlayer(id);
+    }
+
+    // Remove a Team Captain account.
+    // Any teams owned by the captain are safely removed first.
+    @DeleteMapping("/captains/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCaptain(@PathVariable Long id) {
+        sysAdminService.deleteCaptain(id);
+    }
+
     // ---------------- MODERATE SERVICES ----------------
 
-    // Return all team listings for the SysAdmin to review.
-    // GET /api/sysadmin/teams
+    // View all team listings.
     @GetMapping("/teams")
     public List<Team> getAllTeams() {
         return sysAdminService.getAllTeams();
     }
 
     // Remove a team listing.
-    // DELETE /api/sysadmin/teams/{id}
-    // A successful delete returns HTTP 204 No Content.
     @DeleteMapping("/teams/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeam(@PathVariable Long id) {
@@ -80,16 +99,13 @@ public class SysAdminController {
 
     // ---------------- MODERATE REVIEWS ----------------
 
-    // Return all reviews so the SysAdmin can review them.
-    // GET /api/sysadmin/reviews
+    // View all reviews.
     @GetMapping("/reviews")
     public List<Review> getAllReviews() {
         return sysAdminService.getAllReviews();
     }
 
-    // Remove a review.
-    // DELETE /api/sysadmin/reviews/{id}
-    // A successful delete returns HTTP 204 No Content.
+    // Remove an inappropriate or misleading review.
     @DeleteMapping("/reviews/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteReview(@PathVariable Long id) {
@@ -98,8 +114,7 @@ public class SysAdminController {
 
     // ---------------- VIEW USAGE STATISTICS ----------------
 
-    // Return counts of players, captains, total users, teams, and reviews.
-    // GET /api/sysadmin/statistics
+    // View basic RecLeague usage statistics.
     @GetMapping("/statistics")
     public Map<String, Long> getUsageStatistics() {
         return sysAdminService.getUsageStatistics();
