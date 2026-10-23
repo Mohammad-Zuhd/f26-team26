@@ -1,4 +1,3 @@
-
 package _Project.RecLeague_API.service;
 
 import java.nio.charset.StandardCharsets;
@@ -26,17 +25,25 @@ public class TeamCaptainService {
     private final TeamCaptainRepository captainRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public TeamCaptainService(TeamCaptainRepository captainRepository,
-                              PasswordEncoder passwordEncoder) {
+    // Spring gives the service the repository and password encoder automatically.
+    public TeamCaptainService(
+            TeamCaptainRepository captainRepository,
+            PasswordEncoder passwordEncoder) {
+
         this.captainRepository = captainRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     // Register a new Team Captain.
     public TeamCaptainResponse register(TeamCaptainRegistrationRequest request) {
-        String email = request.email().trim().toLowerCase(Locale.ROOT);
+
+        String email = request.email()
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
         ensureEmailAvailable(email);
 
+        // BCrypt passwords cannot be longer than 72 UTF-8 bytes.
         if (request.password().getBytes(StandardCharsets.UTF_8).length > 72) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -44,29 +51,48 @@ public class TeamCaptainService {
         }
 
         TeamCaptain captain = new TeamCaptain();
+
         captain.setName(request.name().trim());
         captain.setEmail(email);
-        captain.setPassword(passwordEncoder.encode(request.password()));
+
+        // Store the encoded password instead of the plain password.
+        captain.setPassword(
+                passwordEncoder.encode(request.password()));
+
         captain.setTeamName(request.teamName().trim());
 
-        return TeamCaptainResponse.from(captainRepository.save(captain));
+        // Every new Team Captain starts with an ACTIVE account.
+        // SysAdmin can suspend the account later if needed.
+        captain.setAccountStatus("ACTIVE");
+
+        return TeamCaptainResponse.from(
+                captainRepository.save(captain));
     }
 
-    // Get a Team Captain profile by ID.
+    // Get one Team Captain profile by ID.
     @Transactional(readOnly = true)
     public TeamCaptainResponse getProfile(Long captainId) {
-        return TeamCaptainResponse.from(findCaptain(captainId));
+
+        return TeamCaptainResponse.from(
+                findCaptain(captainId));
     }
 
     // Update a Team Captain profile.
     public TeamCaptainResponse updateProfile(
-            Long captainId, TeamCaptainUpdateRequest request) {
+            Long captainId,
+            TeamCaptainUpdateRequest request) {
 
         TeamCaptain captain = findCaptain(captainId);
-        String email = request.email().trim().toLowerCase(Locale.ROOT);
 
+        String email = request.email()
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        // If the email changed, make sure another account
+        // is not already using the new email.
         if (!captain.getEmail().equalsIgnoreCase(email)
                 && captainRepository.existsByEmailIgnoreCase(email)) {
+
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "An account with that email already exists.");
@@ -76,11 +102,17 @@ public class TeamCaptainService {
         captain.setEmail(email);
         captain.setTeamName(request.teamName().trim());
 
-        return TeamCaptainResponse.from(captainRepository.save(captain));
+        // accountStatus is intentionally NOT changed here.
+        // A Team Captain should not be able to unsuspend themselves
+        // by updating their own profile.
+
+        return TeamCaptainResponse.from(
+                captainRepository.save(captain));
     }
 
-    // Find a Team Captain or report that the account does not exist.
+    // Find a Team Captain or return 404 if the ID does not exist.
     private TeamCaptain findCaptain(Long captainId) {
+
         return captainRepository.findById(captainId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
@@ -89,7 +121,9 @@ public class TeamCaptainService {
 
     // Prevent registration with an email that already exists.
     private void ensureEmailAvailable(String email) {
+
         if (captainRepository.existsByEmailIgnoreCase(email)) {
+
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "An account with that email already exists.");
