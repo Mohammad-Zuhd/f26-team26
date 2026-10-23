@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import _Project.RecLeague_API.entity.Player;
+import _Project.RecLeague_API.entity.Review;
 import _Project.RecLeague_API.entity.Team;
 import _Project.RecLeague_API.entity.TeamCaptain;
 import _Project.RecLeague_API.service.SysAdminService;
@@ -77,9 +78,27 @@ public class SysAdminController {
         sysAdminService.deleteTeam(id);
     }
 
+    // ---------------- MODERATE REVIEWS ----------------
+
+    // Return all reviews so the SysAdmin can review them.
+    // GET /api/sysadmin/reviews
+    @GetMapping("/reviews")
+    public List<Review> getAllReviews() {
+        return sysAdminService.getAllReviews();
+    }
+
+    // Remove a review.
+    // DELETE /api/sysadmin/reviews/{id}
+    // A successful delete returns HTTP 204 No Content.
+    @DeleteMapping("/reviews/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteReview(@PathVariable Long id) {
+        sysAdminService.deleteReview(id);
+    }
+
     // ---------------- VIEW USAGE STATISTICS ----------------
 
-    // Return counts of players, captains, total users, and teams.
+    // Return counts of players, captains, total users, teams, and reviews.
     // GET /api/sysadmin/statistics
     @GetMapping("/statistics")
     public Map<String, Long> getUsageStatistics() {

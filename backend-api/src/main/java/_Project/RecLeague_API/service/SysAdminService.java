@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import _Project.RecLeague_API.entity.Player;
+import _Project.RecLeague_API.entity.Review;
 import _Project.RecLeague_API.entity.Team;
 import _Project.RecLeague_API.entity.TeamCaptain;
 import _Project.RecLeague_API.repository.PlayerRepository;
+import _Project.RecLeague_API.repository.ReviewRepository;
 import _Project.RecLeague_API.repository.TeamCaptainRepository;
 import _Project.RecLeague_API.repository.TeamRepository;
 
@@ -24,21 +26,24 @@ import _Project.RecLeague_API.repository.TeamRepository;
 public class SysAdminService {
 
     // These repositories let the SysAdmin service access
-    // players, team captains, and teams stored in PostgreSQL.
+    // players, team captains, teams, and reviews stored in PostgreSQL.
     private final PlayerRepository playerRepository;
     private final TeamCaptainRepository captainRepository;
     private final TeamRepository teamRepository;
+    private final ReviewRepository reviewRepository;
 
     // Spring automatically gives this service the repositories it needs.
     // This is called constructor injection.
     public SysAdminService(
             PlayerRepository playerRepository,
             TeamCaptainRepository captainRepository,
-            TeamRepository teamRepository) {
+            TeamRepository teamRepository,
+            ReviewRepository reviewRepository) {
 
         this.playerRepository = playerRepository;
         this.captainRepository = captainRepository;
         this.teamRepository = teamRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     // ---------------- MANAGE USER ACCESS ----------------
@@ -99,17 +104,38 @@ public class SysAdminService {
         teamRepository.deleteById(teamId);
     }
 
+    // ---------------- MODERATE REVIEWS ----------------
+
+    // Get all reviews so the SysAdmin can review reported
+    // or inappropriate content.
+    @Transactional(readOnly = true)
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
+    }
+
+    // Remove a review by ID.
+    // If the review does not exist, return a 404 error.
+    public void deleteReview(Long reviewId) {
+
+        if (!reviewRepository.existsById(reviewId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Review " + reviewId + " was not found.");
+        }
+
+        reviewRepository.deleteById(reviewId);
+    }
+
     // ---------------- VIEW USAGE STATISTICS ----------------
 
-    // Count the current users and teams in the database.
-    // LinkedHashMap keeps the statistics in the same order
-    // when they are returned as JSON.
+    // Count the current users, teams, and reviews in the database.
     @Transactional(readOnly = true)
     public Map<String, Long> getUsageStatistics() {
 
         long playerCount = playerRepository.count();
         long captainCount = captainRepository.count();
         long teamCount = teamRepository.count();
+        long reviewCount = reviewRepository.count();
         long totalUsers = playerCount + captainCount;
 
         Map<String, Long> statistics = new LinkedHashMap<>();
@@ -118,6 +144,7 @@ public class SysAdminService {
         statistics.put("teamCaptains", captainCount);
         statistics.put("totalUsers", totalUsers);
         statistics.put("teams", teamCount);
+        statistics.put("reviews", reviewCount);
 
         return statistics;
     }
