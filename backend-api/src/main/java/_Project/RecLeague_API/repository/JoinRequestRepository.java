@@ -1,4 +1,3 @@
-
 package _Project.RecLeague_API.repository;
 
 import java.util.Collection;
@@ -14,17 +13,24 @@ import _Project.RecLeague_API.entity.JoinRequest;
 
 public interface JoinRequestRepository extends JpaRepository<JoinRequest, Long> {
 
+    // Get all requests for a team with a certain status.
     List<JoinRequest> findAllByTeamIdAndStatusOrderById(
-            Long teamId, String status);
+            Long teamId,
+            String status);
 
+    // Find one request only if it belongs to the specified team.
     Optional<JoinRequest> findByIdAndTeamId(
-            Long id, Long teamId);
+            Long id,
+            Long teamId);
 
+    // Check whether a player already has a request for a team
+    // with one of the provided statuses.
     boolean existsByPlayerIdAndTeamIdAndStatusIn(
             Long playerId,
             Long teamId,
             Collection<String> statuses);
 
+    // Get all join requests belonging to a player.
     List<JoinRequest> findAllByPlayerIdOrderById(Long playerId);
 
     // Delete all join requests and roster memberships for a team.
@@ -32,7 +38,15 @@ public interface JoinRequestRepository extends JpaRepository<JoinRequest, Long> 
     @Query("DELETE FROM JoinRequest j WHERE j.team.id = :teamId")
     void deleteByTeamId(@Param("teamId") Long teamId);
 
-        // Finding a request only if it belongs to this player,
-    // so a player can't cancel someone else's request
-    Optional<JoinRequest> findByIdAndPlayerId(Long id, Long playerId);
+    // Delete all join requests and roster memberships for a player.
+    // SysAdmin can use this before removing the Player account.
+    @Modifying
+    @Query("DELETE FROM JoinRequest j WHERE j.player.id = :playerId")
+    void deleteByPlayerId(@Param("playerId") Long playerId);
+
+    // Find a request only if it belongs to this player,
+    // so a player cannot cancel someone else's request.
+    Optional<JoinRequest> findByIdAndPlayerId(
+            Long id,
+            Long playerId);
 }
