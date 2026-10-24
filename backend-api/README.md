@@ -105,6 +105,8 @@ Content-Type: application/json
 | `PUT`   | `/api/team-captains/{id}/teams/{teamId}/spots/{spotId}`                    | Update an open spot        | `200 OK`      | `400, 404`  |
 | `PATCH` | `/api/team-captains/{id}/teams/{teamId}/spots/{spotId}/close`              | Close an open spot         | `200 OK`      | `404`       |
 | `POST`  | `/api/players/{playerId}/teams/{teamId}/join-requests`                     | Request to join a team     | `201 Created` | `400, 404`  |
+| `GET`    | `/api/players/{playerId}/join-requests`                                   | View my join requests (approved ones are my teams) | `200 OK`         | `404`       |
+| `DELETE` | `/api/players/{playerId}/join-requests/{requestId}`                       | Cancel a pending join request                      | `204 No Content` | `404, 409`  |
 | `GET`   | `/api/team-captains/{id}/teams/{teamId}/join-requests`                     | View pending join requests | `200 OK`      | `404`       |
 | `GET`   | `/api/team-captains/{id}/teams/{teamId}/roster`                            | View the approved roster   | `200 OK`      | `404`       |
 | `PATCH` | `/api/team-captains/{id}/teams/{teamId}/join-requests/{requestId}/approve` | Approve a join request     | `200 OK`      | `400, 404`  |
@@ -116,6 +118,8 @@ Content-Type: application/json
 Join requests start as `PENDING`. Approval changes the status to `APPROVED`,
 which also represents roster membership; the captain can instead mark the
 request `DECLINED`.
+A player can cancel their own request only while it is still `PENDING`;
+cancelling an approved or declined request returns `409 Conflict`.
 
 ### Example Open Spot Request
 
@@ -151,9 +155,13 @@ Content-Type: application/json
 | `POST`  | `/api/players/{playerId}/teams/{teamId}/reviews`                  | Submit a team review  | `201 Created` | `400, 404`  |
 | `GET`   | `/api/teams/{teamId}/reviews`                                     | View a team's reviews | `200 OK`      | `404`       |
 | `PATCH` | `/api/team-captains/{id}/teams/{teamId}/reviews/{reviewId}/reply` | Reply to a review     | `200 OK`      | `400, 404`  |
+| `GET`    | `/api/players/{playerId}/reviews`                                | View reviews I've written                    | `200 OK`         | `404`       |
+| `PUT`    | `/api/players/{playerId}/reviews/{reviewId}`                     | Edit my review (the captain's reply is kept) | `200 OK`         | `400, 404`  |
+| `DELETE` | `/api/players/{playerId}/reviews/{reviewId}`                     | Delete my review                             | `204 No Content` | `404`       |
 
 Only an active player with an approved join request for that team can submit a
 review in the current implementation. Ratings are from 1 to 5.
+Players can only view, edit, or delete their own reviews.
 
 ### Example Review Request
 
@@ -192,6 +200,19 @@ Example response (`200 OK`):
   "captainReply": "Thank you for your review! We're glad you enjoyed playing with us."
 }
 ```
+
+### Example Review Update Request
+
+```http
+PUT /api/players/1/reviews/1
+Content-Type: application/json
+
+{
+  "rating": 4,
+  "comment": "Great team, but games sometimes start late."
+}
+```
+
 ## SysAdmin
 
 The SysAdmin endpoints allow administrators to manage user access, moderate teams and reviews, and view basic platform usage statistics.
