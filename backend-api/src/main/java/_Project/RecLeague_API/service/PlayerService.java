@@ -31,7 +31,13 @@ public class PlayerService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Player not found with id " + id));
     }
-
+    // this is for Milestone 4: which finds a player by their email (used by the "Find my profile" page).
+    // Same idea as getPlayerById, if nobody has that email, it throw a 404 with a clear message.
+    public Player getPlayerByEmail(String email) {
+        return playerRepository.findByEmailIgnoreCase(email.trim())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No player profile uses the email " + email.trim()));
+    }
     // Thiss Creates a new player profile 
     public Player createPlayer(Player player) {
         // it Block duplicate emails with a 409 Conflict
