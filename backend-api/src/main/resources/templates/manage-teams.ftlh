@@ -38,12 +38,14 @@
     </section>
 
     <main id="myTeams" class="container my-5">
-              <#if error??>
+
+        <!-- Error Message -->
+        <#if error??>
             <div class="alert alert-danger">
                 ${error}
             </div>
         </#if>
-        
+
         <!-- My Teams -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold" style="color: #123C73;">My Teams</h2>
@@ -72,7 +74,9 @@
                             <strong>Schedule:</strong> ${team.schedule()}
                         </p>
 
-                        <a href="#editTeam" class="btn text-white" style="background-color: #123C73;">
+                        <a href="#editTeam-${team.id()?c}"
+                           class="btn text-white"
+                           style="background-color: #123C73;">
                             Edit Team
                         </a>
 
@@ -93,7 +97,10 @@
         <!-- Create Team -->
         <div id="createTeam" class="card border-0 shadow-sm rounded-4 mb-5">
             <div class="card-body p-4">
-                <h2 class="fw-bold mb-3" style="color: #123C73;">Create a New Team</h2>
+
+                <h2 class="fw-bold mb-3" style="color: #123C73;">
+                    Create a New Team
+                </h2>
 
                 <form action="/captains/${captainId?c}/teams" method="post">
                     <div class="row g-3">
@@ -101,7 +108,8 @@
                         <div class="col-md-6">
                             <label for="teamName" class="form-label">Team Name</label>
                             <input type="text" id="teamName" name="teamName"
-                                   class="form-control" maxlength="100"
+                                   class="form-control"
+                                   maxlength="100"
                                    placeholder="Enter team name" required>
                         </div>
 
@@ -119,16 +127,17 @@
                             <label for="skillLevel" class="form-label">Skill Level</label>
                             <select id="skillLevel" name="skillLevel" class="form-select" required>
                                 <option value="">Select skill level</option>
-                                <option>Beginner</option>
-                                <option>Intermediate</option>
-                                <option>Advanced</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
                             </select>
                         </div>
 
                         <div class="col-md-6">
                             <label for="location" class="form-label">Location</label>
                             <input type="text" id="location" name="location"
-                                   class="form-control" maxlength="150"
+                                   class="form-control"
+                                   maxlength="150"
                                    placeholder="Enter location" required>
                         </div>
 
@@ -136,109 +145,179 @@
                         <div class="col-md-6">
                             <label for="schedule" class="form-label">Schedule</label>
                             <input type="text" id="schedule" name="schedule"
-                                   class="form-control" maxlength="255"
+                                   class="form-control"
+                                   maxlength="255"
                                    placeholder="Example: Saturday at 3 PM" required>
                         </div>
 
                         <div class="col-12">
                             <label for="description" class="form-label">Team Description</label>
                             <textarea id="description" name="description"
-                                      class="form-control" rows="3" maxlength="2000"
+                                      class="form-control"
+                                      rows="3"
+                                      maxlength="2000"
                                       placeholder="Tell players about your team"></textarea>
                         </div>
 
                         <div class="col-12">
-                            <button type="submit" class="btn text-white" style="background-color: #F15A29;">
+                            <button type="submit" class="btn text-white"
+                                    style="background-color: #F15A29;">
                                 Create Team
                             </button>
-                            <a href="#myTeams" class="btn btn-outline-secondary">Cancel</a>
+                            <a href="#myTeams" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
                         </div>
 
                     </div>
                 </form>
+
             </div>
         </div>
 
 
         <!-- Edit Team -->
-        <div id="editTeam" class="card border-0 shadow-sm rounded-4 mb-5">
-            <div class="card-body p-4">
-                <h2 class="fw-bold mb-3" style="color: #123C73;">Edit Team</h2>
+        <#list teams as team>
+            <div id="editTeam-${team.id()?c}"
+                 class="card border-0 shadow-sm rounded-4 mb-5">
 
-                <form action="manage-teams.html" method="get">
-                    <div class="row g-3">
+                <div class="card-body p-4">
 
-                        <div class="col-md-6">
-                            <label for="editName" class="form-label">Team Name</label>
-                            <input type="text" id="editName" name="editName"
-                                   class="form-control" placeholder="Enter updated team name" required>
+                    <h2 class="fw-bold mb-3" style="color: #123C73;">
+                        Edit Team: ${team.teamName()}
+                    </h2>
+
+                    <form action="/captains/${captainId?c}/teams/${team.id()?c}/edit" method="post">
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">Team Name</label>
+                                <input type="text" name="teamName"
+                                       class="form-control"
+                                       value="${team.teamName()}"
+                                       maxlength="100" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Sport</label>
+                                <select name="sport" class="form-select" required>
+                                    <option value="Basketball"
+                                        <#if team.sport() == "Basketball">selected</#if>>
+                                        Basketball
+                                    </option>
+                                    <option value="Soccer"
+                                        <#if team.sport() == "Soccer">selected</#if>>
+                                        Soccer
+                                    </option>
+                                    <option value="Volleyball"
+                                        <#if team.sport() == "Volleyball">selected</#if>>
+                                        Volleyball
+                                    </option>
+                                    <#if team.sport() != "Basketball" && team.sport() != "Soccer" && team.sport() != "Volleyball">
+                                        <option value="${team.sport()}" selected>${team.sport()}</option>
+                                    </#if>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Skill Level</label>
+                                <select name="skillLevel" class="form-select" required>
+                                    <option value="Beginner"
+                                        <#if team.skillLevel() == "Beginner">selected</#if>>
+                                        Beginner
+                                    </option>
+                                    <option value="Intermediate"
+                                        <#if team.skillLevel() == "Intermediate">selected</#if>>
+                                        Intermediate
+                                    </option>
+                                    <option value="Advanced"
+                                        <#if team.skillLevel() == "Advanced">selected</#if>>
+                                        Advanced
+                                    </option>
+                                    <#if team.skillLevel() != "Beginner" && team.skillLevel() != "Intermediate" && team.skillLevel() != "Advanced">
+                                        <option value="${team.skillLevel()}" selected>${team.skillLevel()}</option>
+                                    </#if>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                <input type="text" name="location"
+                                       class="form-control"
+                                       value="${team.location()}"
+                                       maxlength="150" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Schedule</label>
+                                <input type="text" name="schedule"
+                                       class="form-control"
+                                       value="${team.schedule()}"
+                                       maxlength="255" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Team Description</label>
+                                <textarea name="description"
+                                          class="form-control"
+                                          rows="3"
+                                          maxlength="2000">${(team.description())!''}</textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn text-white"
+                                        style="background-color: #123C73;">
+                                    Save Changes
+                                </button>
+
+                                <a href="#myTeams" class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+                            </div>
+
                         </div>
+                    </form>
 
-                        <div class="col-md-6">
-                            <label for="editSport" class="form-label">Sport</label>
-                            <select id="editSport" name="editSport" class="form-select" required>
-                                <option value="">Select a sport</option>
-                                <option value="Basketball">Basketball</option>
-                                <option value="Soccer">Soccer</option>
-                                <option value="Volleyball">Volleyball</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="editSkill" class="form-label">Skill Level</label>
-                            <select id="editSkill" name="editSkill" class="form-select" required>
-                                <option>Beginner</option>
-                                <option>Intermediate</option>
-                                <option>Advanced</option>
-                            </select>
-                        </div>
-
-                        <!-- Edit Team Schedule -->
-                        <div class="col-md-6">
-                            <label for="editDate" class="form-label">Game Date</label>
-                            <input type="date" id="editDate" name="editDate"
-                                   class="form-control" required>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="editTime" class="form-label">Game Time</label>
-                            <input type="time" id="editTime" name="editTime"
-                                   class="form-control" required>
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn text-white" style="background-color: #123C73;">
-                                Save Changes
-                            </button>
-                            <a href="#myTeams" class="btn btn-outline-secondary">Cancel</a>
-                        </div>
-
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </#list>
 
 
         <!-- Remove Team -->
         <div id="removeTeam" class="card border-0 shadow-sm rounded-4 mb-5">
             <div class="card-body p-4">
+
                 <h2 class="fw-bold text-danger">Remove Team</h2>
                 <p>Select the team you want to remove.</p>
 
                 <form action="/captains/${captainId?c}/teams/delete" method="post">
-                    <label for="teamToRemove" class="form-label">Choose Team</label>
+
+                    <label for="teamToRemove" class="form-label">
+                        Choose Team
+                    </label>
 
                     <select id="teamToRemove" name="teamToRemove"
                             class="form-select mb-3" required>
                         <option value="">Select a team</option>
+
                         <#list teams as team>
-                            <option value="${team.id()?c}">${team.teamName()}</option>
+                            <option value="${team.id()?c}">
+                                ${team.teamName()}
+                            </option>
                         </#list>
+
                     </select>
 
-                    <button type="submit" class="btn btn-danger">Confirm Remove</button>
-                    <a href="#myTeams" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-danger">
+                        Confirm Remove
+                    </button>
+
+                    <a href="#myTeams" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
                 </form>
+
             </div>
         </div>
 
