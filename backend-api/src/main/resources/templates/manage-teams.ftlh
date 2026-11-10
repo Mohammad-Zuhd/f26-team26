@@ -38,7 +38,12 @@
     </section>
 
     <main id="myTeams" class="container my-5">
-
+              <#if error??>
+            <div class="alert alert-danger">
+                ${error}
+            </div>
+        </#if>
+        
         <!-- My Teams -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold" style="color: #123C73;">My Teams</h2>
@@ -220,7 +225,7 @@
                 <h2 class="fw-bold text-danger">Remove Team</h2>
                 <p>Select the team you want to remove.</p>
 
-                <form action="manage-teams.html" method="get">
+                <form action="/captains/${captainId?c}/teams/delete" method="post">
                     <label for="teamToRemove" class="form-label">Choose Team</label>
 
                     <select id="teamToRemove" name="teamToRemove"

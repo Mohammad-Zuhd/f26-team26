@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import _Project.RecLeague_API.dto.TeamRequest;
 import _Project.RecLeague_API.service.TeamService;
@@ -50,6 +53,23 @@ public class TeamUiController {
         }
 
         teamService.create(captainId, request);
+
+        return "redirect:/captains/" + captainId + "/teams";
+    }
+
+    // Remove a team.
+    @PostMapping("/captains/{captainId}/teams/delete")
+    public String deleteTeam(
+            @PathVariable Long captainId,
+            @RequestParam Long teamToRemove,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            teamService.delete(captainId, teamToRemove);
+        } catch (ResponseStatusException e) {
+            redirectAttributes.addFlashAttribute(
+                    "error", "The selected team could not be found.");
+        }
 
         return "redirect:/captains/" + captainId + "/teams";
     }
