@@ -1,11 +1,17 @@
+
 package _Project.RecLeague_API.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import _Project.RecLeague_API.dto.TeamRequest;
 import _Project.RecLeague_API.service.TeamService;
+import jakarta.validation.Valid;
 
 @Controller
 public class TeamUiController {
@@ -26,5 +32,25 @@ public class TeamUiController {
         model.addAttribute("teams", teamService.listTeams(captainId));
 
         return "manage-teams";
+    }
+
+    // Create a new team.
+    @PostMapping("/captains/{captainId}/teams")
+    public String createTeam(
+            @PathVariable Long captainId,
+            @Valid @ModelAttribute TeamRequest request,
+            BindingResult result,
+            Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("captainId", captainId);
+            model.addAttribute("teams", teamService.listTeams(captainId));
+            model.addAttribute("error", "Please enter valid team information.");
+            return "manage-teams";
+        }
+
+        teamService.create(captainId, request);
+
+        return "redirect:/captains/" + captainId + "/teams";
     }
 }
