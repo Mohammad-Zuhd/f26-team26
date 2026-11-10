@@ -19,7 +19,7 @@
 
       <div class="d-flex align-items-center gap-4">
         <a href="dashboard.html" class="text-decoration-none" style="color: #123C73;">Dashboard</a>
-        <a href="manage-teams.html" class="text-decoration-none fw-bold" style="color: #123C73;">My Teams</a>
+        <a href="/captains/${captainId?c}/teams" class="text-decoration-none fw-bold" style="color: #123C73;">My Teams</a>
         <a href="post-open-spots.html" class="text-decoration-none text-secondary">Open Spots</a>
         <a href="roster.html" class="text-decoration-none text-secondary">Roster</a>
         <a href="reviews.html" class="text-decoration-none text-secondary">Reviews</a>
