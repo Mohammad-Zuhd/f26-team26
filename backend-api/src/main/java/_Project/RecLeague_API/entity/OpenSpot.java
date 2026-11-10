@@ -1,4 +1,3 @@
-
 package _Project.RecLeague_API.entity;
 
 import java.time.LocalDate;
@@ -18,9 +17,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-/**
- * Represents an open roster spot posted by a Team Captain.
- */
 @Entity
 @Table(name = "open_spots")
 public class OpenSpot {
@@ -29,10 +25,13 @@ public class OpenSpot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // The team that has the open spot.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id")
+    private Game game;
 
     @NotBlank
     @Size(max = 50)
@@ -77,6 +76,14 @@ public class OpenSpot {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public String getSpotType() {
