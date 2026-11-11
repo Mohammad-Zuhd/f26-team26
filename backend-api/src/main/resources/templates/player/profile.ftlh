@@ -24,8 +24,7 @@
         <tr><th>Preferred Sports</th><td>${player.preferredSports}</td></tr>
         <tr><th>Skill Level</th><td>${player.skillLevel}</td></tr>
         <#-- availability is optional, so if it's empty (null), it show "Not set" instead of crashing -->
-        <tr><th>Availability</th><td>${player.availability!'Not set'}</td></tr>
-      </table>
+        <tr><th>Availability</th><td>${(player.availability?has_content)?then(player.availability, 'Not set')}</td></tr>      </table>
 
       <a href="/player/profile/edit" class="btn bg-orange text-white">Edit Profile</a>
       <a href="/player/teams" class="btn bg-navy text-white ms-2">Find Teams</a>

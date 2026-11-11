@@ -51,3 +51,35 @@
 
         <div class="mb-3">
           <label for="preferredSports" class="form-label">Preferred sports</label>
+          <input id="preferredSports" name="preferredSports" type="text" maxlength="255" placeholder="Soccer, Basketball"
+                 class="form-control ${(fieldError('preferredSports')?has_content)?then('is-invalid', '')}"
+                 value="${(player.preferredSports)!''}">
+          <div class="invalid-feedback">${fieldError('preferredSports')}</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="skillLevel" class="form-label">Skill level</label>
+          <#assign currentLevel = (player.skillLevel)!''>
+          <select id="skillLevel" name="skillLevel"
+                  class="form-select ${(fieldError('skillLevel')?has_content)?then('is-invalid', '')}">
+            <option value="">Choose...</option>
+            <#list skillLevels as level>
+              <option value="${level}" <#if currentLevel == level>selected</#if>>${level}</option>
+            </#list>
+          </select>
+          <div class="invalid-feedback">${fieldError('skillLevel')}</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="availability" class="form-label">Availability <span class="text-muted">(optional)</span></label>
+          <input id="availability" name="availability" type="text" maxlength="255" placeholder="Weeknights after 6pm"
+                 class="form-control" value="${(player.availability)!''}">
+        </div>
+
+        <button type="submit" class="btn bg-navy text-white">Save</button>
+        <a href="${(playerLoggedIn!false)?then('/player/profile', '/')}" class="btn btn-outline-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+
+</@l.page>
