@@ -3,6 +3,7 @@ package _Project.RecLeague_API.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import _Project.RecLeague_API.dto.TeamRequest;
 import _Project.RecLeague_API.dto.TeamResponse;
 import _Project.RecLeague_API.service.GameService;
 import _Project.RecLeague_API.service.OpenSpotService;
+import _Project.RecLeague_API.service.RosterService;
 import _Project.RecLeague_API.service.TeamService;
 import jakarta.validation.Valid;
 
@@ -29,13 +31,16 @@ public class TeamUiController {
     private final TeamService teamService;
     private final OpenSpotService openSpotService;
     private final GameService gameService;
+    private final RosterService rosterService;
 
     public TeamUiController(TeamService teamService,
                             OpenSpotService openSpotService,
-                            GameService gameService) {
+                            GameService gameService,
+                            RosterService rosterService) {
         this.teamService = teamService;
         this.openSpotService = openSpotService;
         this.gameService = gameService;
+        this.rosterService = rosterService;
     }
 
     @GetMapping("/captains/{captainId}/teams")
@@ -170,5 +175,55 @@ public class TeamUiController {
             redirectAttributes.addFlashAttribute("error", e.getReason());
         }
         return "redirect:/captains/" + captainId + "/spots";
+    }
+
+    // US-3: View roster and pending join requests.
+    @GetMapping("/captains/{captainId}/roster")
+    public String viewRoster(@PathVariable Long captainId,
+                             @RequestParam(required = false) Long teamId,
+                             Model model) {
+        List<TeamResponse> teams = teamService.listTeams(captainId);
+        TeamResponse selectedTeam = null;
+
+        if (!teams.isEmpty()) {
+            if (teamId == null) {
+                selectedTeam = teams.get(0);
+            } else {
+                selectedTeam = teams.stream()
+                        .filter(team -> team.id().equals(teamId))
+                        .findFirst()
+                        .orElseThrow(() -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND, "Team not found."));
+            }
+        }
+
+        model.addAttribute("captainId", captainId);
+        model.addAttribute("teams", teams);
+        model.addAttribute("selectedTeam", selectedTeam);
+
+        if (selectedTeam != null) {
+            model.addAttribute("members", rosterService.roster(captainId, selectedTeam.id()));
+            model.addAttribute("requests", rosterService.pendingRequests(captainId, selectedTeam.id()));
+        }
+
+        return "roster";
+    }
+
+    // US-3: Approve a join request.
+    @PostMapping("/captains/{captainId}/teams/{teamId}/requests/{requestId}/approve")
+    public String approveRequest(@PathVariable Long captainId,
+                                 @PathVariable Long teamId,
+                                 @PathVariable Long requestId) {
+        rosterService.approve(captainId, teamId, requestId);
+        return "redirect:/captains/" + captainId + "/roster?teamId=" + teamId;
+    }
+
+    // US-3: Decline a join request.
+    @PostMapping("/captains/{captainId}/teams/{teamId}/requests/{requestId}/decline")
+    public String declineRequest(@PathVariable Long captainId,
+                                 @PathVariable Long teamId,
+                                 @PathVariable Long requestId) {
+        rosterService.decline(captainId, teamId, requestId);
+        return "redirect:/captains/" + captainId + "/roster?teamId=" + teamId;
     }
 }
