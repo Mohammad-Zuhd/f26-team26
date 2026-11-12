@@ -18,7 +18,8 @@
             <input id="email" name="email" type="email" class="form-control mb-3" value="${email!''}">
             <button type="submit" class="btn bg-navy text-white">Continue</button>
           </form>
-          <p class="mt-3 mb-0 text-muted">New here? <a href="/player/signup">Create a profile</a>.</p>
+          <p class="small text-muted mt-3 mb-1">Prototype login: email only, no password check yet.</p>
+          <p class="mb-0 text-muted">New here? <a href="/player/signup">Create a profile</a>.</p>
         </div>
       </div>
     </div>
