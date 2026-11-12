@@ -21,8 +21,8 @@
   <#-- Our two brand colors from the prototype, navy and orange -->
   <style>
     .navy { color: #123C73; }
-    .bg-navy { background-color: #123C73; }
-    .bg-orange { background-color: #F15A29; }
+    .bg-navy { background-color: #123C73 !important; }
+    .bg-orange { background-color: #F15A29 !important; }
     .nav-link-active { font-weight: 700; color: #123C73 !important; }
   </style>
 </head>
