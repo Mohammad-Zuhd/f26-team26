@@ -82,7 +82,7 @@
                     I'm a Player
                 </a>
 
-                <a href="#login"
+                <a href="#get-started"
                    class="btn btn-lg text-white"
                    style="background-color: #F15A29;">
                     I'm a Team Captain
@@ -248,11 +248,28 @@
                                 Manage teams, rosters, open spots, and reviews.
                             </p>
 
-                            <a href="#login"
-                               class="btn text-white"
-                               style="background-color: #123C73;">
-                                Captain Login
-                            </a>
+                            <!-- Milestone 4 Team Captain MVC pages -->
+                            <div class="d-grid gap-2">
+
+                                <a href="/captains/1/teams"
+                                   class="btn text-white"
+                                   style="background-color: #123C73;">
+                                    Manage Teams
+                                </a>
+
+                                <a href="/captains/1/spots"
+                                   class="btn text-white"
+                                   style="background-color: #123C73;">
+                                    Open Spots &amp; Games
+                                </a>
+
+                                <a href="/captains/1/roster?teamId=2"
+                                   class="btn text-white"
+                                   style="background-color: #F15A29;">
+                                    Team Roster
+                                </a>
+
+                            </div>
 
                         </div>
 
@@ -434,9 +451,9 @@
                 window.location.href = "customer-prototype/browse-teams.html";
             }
 
-            // Team Captain prototype
+            // Milestone 4 Team Captain MVC (demo navigation, not authentication)
             if (role === "captain") {
-                window.location.href = "provider-prototype/dashboard.html";
+                window.location.href = "/captains/1/teams";
             }
 
             // SysAdmin prototype

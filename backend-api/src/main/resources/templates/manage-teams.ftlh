@@ -12,18 +12,18 @@
     <!-- Navbar -->
     <nav class="navbar bg-white border-bottom shadow-sm">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="dashboard.html">
-                <img src="../images/recleague-logo.png" alt="RecLeague Logo" width="100" height="100" class="me-2">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="/images/recleague-logo.png" alt="RecLeague Logo" width="100" height="100" class="me-2">
                 <span class="fw-bold fs-4" style="color: #123C73;">RecLeague</span>
             </a>
 
             <div class="d-flex align-items-center gap-4">
-                <a href="dashboard.html" class="text-decoration-none" style="color: #123C73;">Dashboard</a>
+                <a href="/" class="text-decoration-none" style="color: #123C73;">Dashboard</a>
                 <a href="/captains/${captainId?c}/teams" class="text-decoration-none fw-bold" style="color: #123C73;">My Teams</a>
-                <a href="post-open-spots.html" class="text-decoration-none text-secondary">Open Spots</a>
-                <a href="roster.html" class="text-decoration-none text-secondary">Roster</a>
-                <a href="reviews.html" class="text-decoration-none text-secondary">Reviews</a>
-                <a href="../index.html" class="btn text-white" style="background-color: #123C73;">Log Out</a>
+                <a href="/captains/${captainId?c}/spots" class="text-decoration-none text-secondary">Open Spots</a>
+                <a href="/captains/${captainId?c}/roster" class="text-decoration-none text-secondary">Roster</a>
+                <span class="text-secondary opacity-50" title="Not implemented for Milestone 4">Reviews</span>
+                <span class="btn text-white opacity-50" style="background-color: #123C73;" title="Login/logout is not implemented">Log Out</span>
             </div>
         </div>
     </nav>
