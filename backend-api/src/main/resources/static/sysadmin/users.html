@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Users | RecLeague</title>
+
+    <!-- Bootstrap is used for the page layout and styling. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="navbar bg-white border-bottom shadow-sm">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold fs-4"
+               href="#"
+               style="color: #123C73;">
+                RecLeague
+            </a>
+
+            <div class="d-flex align-items-center gap-4">
+
+                <a href="users.html"
+                   class="text-decoration-none fw-bold"
+                   style="color: #123C73;">
+                    Users
+                </a>
+
+                <a href="statistics.html"
+                   class="text-decoration-none text-secondary">
+                    Statistics
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ==================== PAGE HEADER ==================== -->
+    <section class="py-5 text-white"
+             style="background-color: #123C73;">
+
+        <div class="container">
+
+            <span class="badge mb-3"
+                  style="background-color: #F15A29;">
+                USER MANAGEMENT
+            </span>
+
+            <h1 class="display-5 fw-bold mb-3">
+                Manage User Access
+            </h1>
+
+            <p class="fs-5 mb-0">
+                View, activate, suspend, or remove RecLeague user accounts.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- ==================== USER MANAGEMENT ==================== -->
+    <main class="container my-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+
+            <h2 class="fw-bold mb-0"
+                style="color: #123C73;">
+                User Accounts
+            </h2>
+
+            <!-- Reload users from the database without refreshing the page. -->
+            <button class="btn text-white"
+                    style="background-color: #123C73;"
+                    onclick="loadUsers()">
+                Refresh Users
+            </button>
+
+        </div>
+
+        <p class="text-muted mb-4">
+            These accounts are loaded from the RecLeague database.
+        </p>
+
+
+        <!-- Success messages are shown here after an action works. -->
+        <div id="successMessage"
+             class="alert alert-success d-none"
+             role="alert">
+        </div>
+
+
+        <!-- Error messages are shown here if an API request fails. -->
+        <div id="errorMessage"
+             class="alert alert-danger d-none"
+             role="alert">
+        </div>
+
+
+        <!-- ==================== USER TABLE ==================== -->
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <!--
+                            JavaScript will create the rows here
+                            using real Player and Team Captain data.
+                        -->
+                        <tbody id="userTableBody">
+
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center text-muted py-4">
+                                    Loading users...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="py-4 text-white text-center"
+            style="background-color: #123C73;">
+
+        <p class="fw-bold mb-1">
+            RecLeague
+        </p>
+
+        <p class="mb-0 small">
+            Connecting players. Building teams.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        /*
+         * This page demonstrates the Manage User Access story.
+         *
+         * The browser calls the SysAdmin REST API.
+         *
+         * Browser
+         *    ↓
+         * SysAdminController
+         *    ↓
+         * SysAdminService
+         *    ↓
+         * Repository
+         *    ↓
+         * PostgreSQL / Neon database
+         */
+
+
+        // Loads both Players and Team Captains from the backend.
+        async function loadUsers() {
+
+            hideMessages();
+
+            const tableBody =
+                document.getElementById("userTableBody");
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5"
+                        class="text-center text-muted py-4">
+                        Loading users...
+                    </td>
+                </tr>
+            `;
+
+            try {
+
+                /*
+                 * Send both GET requests at the same time.
+                 *
+                 * Players:
+                 * GET /api/sysadmin/players
+                 *
+                 * Captains:
+                 * GET /api/sysadmin/captains
+                 */
+                const [playerResponse, captainResponse] =
+                    await Promise.all([
+                        fetch("/api/sysadmin/players"),
+                        fetch("/api/sysadmin/captains")
+                    ]);
+
+
+                // Make sure both requests were successful.
+                if (!playerResponse.ok || !captainResponse.ok) {
+                    throw new Error(
+                        "Unable to retrieve user accounts."
+                    );
+                }
+
+
+                // Convert both API responses from JSON.
+                const players =
+                    await playerResponse.json();
+
+                const captains =
+                    await captainResponse.json();
+
+
+                // Clear the loading message.
+                tableBody.innerHTML = "";
+
+
+                // Add every Player to the table.
+                players.forEach(player => {
+
+                    addUserRow(
+                        player,
+                        "Player",
+                        "players"
+                    );
+
+                });
+
+
+                // Add every Team Captain to the table.
+                captains.forEach(captain => {
+
+                    addUserRow(
+                        captain,
+                        "Team Captain",
+                        "captains"
+                    );
+
+                });
+
+
+                // If the database has no users, show a friendly message.
+                if (players.length === 0 &&
+                    captains.length === 0) {
+
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="5"
+                                class="text-center text-muted py-4">
+                                No user accounts were found.
+                            </td>
+                        </tr>
+                    `;
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Error loading users:",
+                    error
+                );
+
+                tableBody.innerHTML = "";
+
+                showError(
+                    "Unable to load users. Please make sure the backend is running."
+                );
+            }
+        }
+
+
+        /*
+         * Creates one table row for either a Player
+         * or a Team Captain.
+         */
+        function addUserRow(user, role, endpointType) {
+
+            const tableBody =
+                document.getElementById("userTableBody");
+
+
+            /*
+             * If accountStatus is missing for some reason,
+             * display UNKNOWN instead of breaking the page.
+             */
+            const status =
+                user.accountStatus || "UNKNOWN";
+
+
+            // Pick the correct Bootstrap color for the status.
+            const statusClass =
+                status === "ACTIVE"
+                    ? "bg-success"
+                    : "bg-danger";
+
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+                <td>${escapeHtml(user.name)}</td>
+
+                <td>${escapeHtml(user.email)}</td>
+
+                <td>${role}</td>
+
+                <td>
+                    <span class="badge ${statusClass}">
+                        ${status}
+                    </span>
+                </td>
+
+                <td class="d-flex flex-wrap gap-2">
+
+                    <button
+                        class="btn btn-sm text-white"
+                        style="background-color: #123C73;"
+                        onclick="changeStatus(
+                            ${user.id},
+                            '${endpointType}',
+                            'ACTIVE'
+                        )">
+                        Activate
+                    </button>
+
+                    <button
+                        class="btn btn-sm text-white"
+                        style="background-color: #F15A29;"
+                        onclick="changeStatus(
+                            ${user.id},
+                            '${endpointType}',
+                            'SUSPENDED'
+                        )">
+                        Suspend
+                    </button>
+
+                    <button
+                        class="btn btn-sm btn-danger"
+                        onclick="removeUser(
+                            ${user.id},
+                            '${endpointType}',
+                            '${escapeForJavaScript(user.name)}'
+                        )">
+                        Remove
+                    </button>
+
+                </td>
+            `;
+
+
+            tableBody.appendChild(row);
+        }
+
+
+        /*
+         * Changes a Player or Team Captain account status.
+         *
+         * Example:
+         * PUT /api/sysadmin/players/1/status?status=SUSPENDED
+         */
+        async function changeStatus(
+            id,
+            endpointType,
+            newStatus
+        ) {
+
+            hideMessages();
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/sysadmin/${endpointType}/${id}/status?status=${newStatus}`,
+                        {
+                            method: "PUT"
+                        }
+                    );
+
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Unable to update account status."
+                    );
+                }
+
+
+                showSuccess(
+                    `Account status changed to ${newStatus}.`
+                );
+
+
+                /*
+                 * Reload the users from the database.
+                 *
+                 * This proves that the new status was
+                 * actually saved by the backend.
+                 */
+                await loadUsers();
+
+            } catch (error) {
+
+                console.error(
+                    "Error changing account status:",
+                    error
+                );
+
+                showError(
+                    "Unable to update the account status."
+                );
+            }
+        }
+
+
+        /*
+         * Removes a Player or Team Captain.
+         *
+         * DELETE /api/sysadmin/players/{id}
+         * or
+         * DELETE /api/sysadmin/captains/{id}
+         */
+        async function removeUser(
+            id,
+            endpointType,
+            name
+        ) {
+
+            /*
+             * Ask for confirmation first because
+             * deletion cannot easily be undone.
+             */
+            const confirmed =
+                window.confirm(
+                    `Are you sure you want to remove ${name}?`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            hideMessages();
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/sysadmin/${endpointType}/${id}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+
+                /*
+                 * Successful DELETE requests return
+                 * 204 No Content from our backend.
+                 */
+                if (!response.ok) {
+                    throw new Error(
+                        "Unable to remove account."
+                    );
+                }
+
+
+                showSuccess(
+                    `${name} was removed successfully.`
+                );
+
+
+                // Reload the table using fresh database data.
+                await loadUsers();
+
+            } catch (error) {
+
+                console.error(
+                    "Error removing account:",
+                    error
+                );
+
+                showError(
+                    "Unable to remove the account."
+                );
+            }
+        }
+
+
+        // Displays a success message.
+        function showSuccess(message) {
+
+            const successMessage =
+                document.getElementById(
+                    "successMessage"
+                );
+
+            successMessage.textContent =
+                message;
+
+            successMessage.classList.remove(
+                "d-none"
+            );
+        }
+
+
+        // Displays an error message.
+        function showError(message) {
+
+            const errorMessage =
+                document.getElementById(
+                    "errorMessage"
+                );
+
+            errorMessage.textContent =
+                message;
+
+            errorMessage.classList.remove(
+                "d-none"
+            );
+        }
+
+
+        // Hides old success and error messages.
+        function hideMessages() {
+
+            document
+                .getElementById("successMessage")
+                .classList.add("d-none");
+
+            document
+                .getElementById("errorMessage")
+                .classList.add("d-none");
+        }
+
+
+        /*
+         * Prevent user data from being interpreted
+         * as HTML when displaying it on the page.
+         */
+        function escapeHtml(value) {
+
+            const element =
+                document.createElement("div");
+
+            element.textContent =
+                value ?? "";
+
+            return element.innerHTML;
+        }
+
+
+        /*
+         * Makes a user's name safe when it is placed
+         * inside the Remove button's JavaScript call.
+         */
+        function escapeForJavaScript(value) {
+
+            return String(value ?? "")
+                .replace(/\\/g, "\\\\")
+                .replace(/'/g, "\\'");
+        }
+
+
+        /*
+         * Automatically load the real users when
+         * this page first opens.
+         */
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadUsers
+        );
+
+    </script>
+
+</body>
+
+</html>
